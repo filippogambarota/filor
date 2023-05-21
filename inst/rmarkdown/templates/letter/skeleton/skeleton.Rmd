@@ -1,0 +1,27 @@
+---
+author: "Filippo Gambarota"
+role: "Role"
+journal: "Journal"
+affiliation: "Department of Developmental Psychology and Socialization"
+paper: "Paper title"
+university: "University of Padova"
+editor: "Prof. Name Surname"
+date: "`r Sys.Date()`"
+output: filor::letter
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+Dear `r rmarkdown::metadata$editor`,
+
+We wish to submit our work "*`r rmarkdown::metadata$paper`*" for consideration by `r rmarkdown::metadata$journal`.
+
+...
+
+Thank you for your consideration of this manuscript.
+
+Best regards,
+
+Filippo Gambarota

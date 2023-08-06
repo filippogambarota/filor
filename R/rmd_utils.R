@@ -154,11 +154,15 @@ get_funs <- function(file){
     }else{
       out[[i]] <- file[cutpoints[i]:(cutpoints[i + 1] - 1)]
     }
+
+    out[[i]] <- out[[i]][!grepl("#'", out[[i]])]
+    endfun <- rev(grep("\\}", out[[i]]))[1]
+    out[[i]] <- out[[i]][1:endfun]
+
     fun_names[i] <- stringr::str_extract(out[[i]][1], ".+?(?=<-)")
   }
   fun_names <- gsub(" ", "", fun_names)
   names(out) <- fun_names
-  out <- lapply(out, function(x) x[!grepl("#", x)]) # remove roxygen
   return(out)
 }
 
@@ -169,5 +173,5 @@ get_funs <- function(file){
 #' @export
 #'
 print_fun <- function(fun){
-  cat("```r\n", fun, sep = "\n", "```\n")
+  cat("```r", fun, "```", sep = "\n")
 }

@@ -175,3 +175,22 @@ get_funs <- function(file){
 print_fun <- function(fun){
   cat("```r", fun, "```", sep = "\n")
 }
+
+#' remove_revision
+#'
+#' @param file the input file
+#' @param out the output file name. Default to \code{NULL}
+#'
+#' @export
+#'
+remove_revision <- function(file, out = NULL){
+  lines <- suppressWarnings(readLines(file))
+  lines <- gsub("\\\\brev[ ]{0,1}", "", lines)
+  lines <- gsub("[ ]{0,1}\\\\erev", "", lines)
+  if(is.null(out)) out <- tools::file_path_sans_ext(file)
+  out <- paste0(out, "_norev.", tools::file_ext(file))
+  writeLines(lines, out)
+  msg <- sprintf("All revision removed from %s! :)",
+                 cli::col_green(basename(file)))
+  cli::cli_alert_success(msg)
+}

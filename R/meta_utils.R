@@ -63,4 +63,38 @@ sim_meta <- function(k,
   data.frame(id = 1:k, yi, vi, sei = sqrt(vi), deltai, n1 = n1, n2 = n2)
 }
 
+#' compare_rma
+#'
+#' @param ... models of class \code{rma.uni} or \code{rma.mv}
+#'
+#' @return a dataframe with coefficients
+#' @importFrom dplyr bind_rows
+#' @export
+#'
+compare_rma <- function(...){
+  fitnames <- as.list(substitute(...()))
+  getstat <- function(x){
+    fixefs <- data.frame(b = x$b,
+                         se = x$se,
+                         stat = x$zval,
+                         pval = x$pval,
+                         ci.lb = x$ci.lb,
+                         ci.ub = x$ci.ub)
+
+    if(is.null(x$model)){
+      sigmas <- x$sigma2
+    }else{
+      sigmas <- x$tau2
+    }
+
+    names(sigmas) <- paste0("tau2_", 1:length(sigmas))
+    cbind(fixefs, t(data.frame(sigmas)))
+  }
+  fits <- list(...)
+  sums <- lapply(fits, getstat)
+  sums <- dplyr::bind_rows(sums)
+  out <- data.frame(t(sums))
+  setNames(out, fitnames)
+}
+
 

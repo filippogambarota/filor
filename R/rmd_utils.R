@@ -65,17 +65,28 @@ write_bib_rmd <- function(file = knitr::current_input(), input_bib, output_bib){
   invisible(bibfile_sub)
 }
 
-#' disp_file
+#' show_file
 #'
 #' @param file string that indicate the path and filename
-#'
+#' @param how if bare, the file is printed as it is. With generic the file is embedded into backticks.
+#' If code, the file is embedded with backticks and an engine. If not specified the default engine is R.
 #' @return Invisibly return the file lines and print the content
 #' @export
 #'
 #'
-disp_file <- function(file){
-  lines <- readLines(file)
-  cat(lines, sep = "\n")
+show_file <- function(file,
+                      how = c("bare", "generic", "code"),
+                      engine = NULL){
+  how <- match.arg(how)
+  lines <- suppressWarnings(readLines(file))
+  if(how == "generic"){
+    cat("```", lines, "```", sep = "\n")
+  }else if(how == "code"){
+    if(is.null(engine)) engine <- "r"
+    cat(paste0("```", engine), lines, "```", sep = "\n")
+  }else{
+    cat(lines, sep = "\n")
+  }
   invisible(lines)
 }
 
@@ -133,37 +144,40 @@ get_chunk_labels <- function(file, output = NULL, as_captions = FALSE){
 
 #' get_funs
 #' @description
-#' Extract functions from an .R file as text, creating a named list.
+#' Extract functions from .R files as text, creating a named list.
 #'
-#' @param file an .R file from which extracting function
+#' @param file one or multiple .R files as character vector from which extracting function
 #'
 #' @return a named list with function
 #' @export
 #'
-get_funs <- function(file){
-  file <- suppressWarnings(readLines(file))
-  cutpoints <- grep("<- function", file)
-  cutpoints[length(cutpoints) + 1] <- length(file)
+get_funs <- function(files){
+  funs <- lapply(files, function(file){
+    file <- suppressWarnings(readLines(file))
+    cutpoints <- grep("<- function", file)
+    cutpoints[length(cutpoints) + 1] <- length(file)
 
-  out <- vector(mode = "list", length = length(cutpoints)-1)
-  fun_names <- vector(mode = "character", length = length(cutpoints)-1)
+    out <- vector(mode = "list", length = length(cutpoints)-1)
+    fun_names <- vector(mode = "character", length = length(cutpoints)-1)
 
-  for(i in 1:(length(cutpoints) - 1)){
-    if(i == length(cutpoints) - 1){
-      out[[i]] <- file[cutpoints[i]:(cutpoints[i + 1])]
-    }else{
-      out[[i]] <- file[cutpoints[i]:(cutpoints[i + 1] - 1)]
+    for(i in 1:(length(cutpoints) - 1)){
+      if(i == length(cutpoints) - 1){
+        out[[i]] <- file[cutpoints[i]:(cutpoints[i + 1])]
+      }else{
+        out[[i]] <- file[cutpoints[i]:(cutpoints[i + 1] - 1)]
+      }
+
+      out[[i]] <- out[[i]][!grepl("#'", out[[i]])]
+      endfun <- rev(grep("\\}", out[[i]]))[1]
+      out[[i]] <- out[[i]][1:endfun]
+
+      fun_names[i] <- stringr::str_extract(out[[i]][1], ".+?(?=<-)")
     }
-
-    out[[i]] <- out[[i]][!grepl("#'", out[[i]])]
-    endfun <- rev(grep("\\}", out[[i]]))[1]
-    out[[i]] <- out[[i]][1:endfun]
-
-    fun_names[i] <- stringr::str_extract(out[[i]][1], ".+?(?=<-)")
-  }
-  fun_names <- gsub(" ", "", fun_names)
-  names(out) <- fun_names
-  return(out)
+    fun_names <- gsub(" ", "", fun_names)
+    names(out) <- fun_names
+    return(out)
+  })
+  unlist(funs, recursive = FALSE)
 }
 
 #' print_fun

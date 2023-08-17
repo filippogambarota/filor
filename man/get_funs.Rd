@@ -4,14 +4,14 @@
 \alias{get_funs}
 \title{get_funs}
 \usage{
-get_funs(file)
+get_funs(files)
 }
 \arguments{
-\item{file}{an .R file from which extracting function}
+\item{file}{one or multiple .R files as character vector from which extracting function}
 }
 \value{
 a named list with function
 }
 \description{
-Extract functions from an .R file as text, creating a named list.
+Extract functions from .R files as text, creating a named list.
 }

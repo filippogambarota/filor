@@ -101,3 +101,26 @@ gh_down_link <- function(x, hyperlink = FALSE, url_name = NULL){
   }
   return(url)
 }
+
+#' all_same
+#' @description
+#' Check if all values in a vector are the same. It is robust also to NA values
+#' that can be handled with the \code{na.rm} parameter
+#'
+#' @param x a vector
+#' @param na.rm logical indicating whether \code{NA} values should be removed or not.
+#'
+#' @return logical vector
+#' @export
+#'
+#' @examples
+#' all_same(c(1,1,1))  # TRUE
+#' all_same(c(1,2,3))  # FALSE
+#' all_same(c(1,1,NA)) # FALSE
+#' all_same(c(1,1,NA), na.rm = TRUE) # TRUE
+all_same <- function(x, na.rm = FALSE){
+  if(na.rm){
+    x <- x[!is.na(x)]
+  }
+  length(unique(x)) == 1
+}

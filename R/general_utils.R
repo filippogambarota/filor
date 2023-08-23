@@ -124,3 +124,18 @@ all_same <- function(x, na.rm = FALSE){
   }
   length(unique(x)) == 1
 }
+
+
+#' is_valid_url
+#' @description
+#' Check if a string is a valid url. Thanks to https://stackoverflow.com/a/73952264/9032257
+#'
+#' @param string
+#'
+#' @return logical
+#' @export
+#'
+is_valid_url <- function(string) {
+  pattern <- "^www\\.|^https:\\/\\/"
+  grepl(pattern, string)
+}

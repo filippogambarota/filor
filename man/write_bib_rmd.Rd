@@ -4,7 +4,12 @@
 \alias{write_bib_rmd}
 \title{write_bib_rmd}
 \usage{
-write_bib_rmd(file = knitr::current_input(), input_bib, output_bib)
+write_bib_rmd(
+  file = knitr::current_input(),
+  input_bib,
+  output_bib,
+  get_file = FALSE
+)
 }
 \arguments{
 \item{file}{character that indicate the input file}
@@ -12,6 +17,8 @@ write_bib_rmd(file = knitr::current_input(), input_bib, output_bib)
 \item{input_bib}{character that indicate the input \code{.bib} file}
 
 \item{output_bib}{character that indicate the output \code{.bib} file}
+
+\item{get_file}{logical should the raw file be invisibly returned}
 }
 \value{
 the bibfile

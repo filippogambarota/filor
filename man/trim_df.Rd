@@ -4,7 +4,7 @@
 \alias{trim_df}
 \title{trim_df}
 \usage{
-trim_df(data, n = 4)
+trim_df(data, n = 4, digits = 3)
 }
 \arguments{
 \item{data}{a dataframe}

@@ -216,9 +216,10 @@ purl_here <- function(file, output = NULL){
 #' @return a dataframe
 #' @export
 #'
-trim_df <- function(data, n = 4){
+trim_df <- function(data, n = 4, digits = 3){
   data <- lapply(data, function(x) if(is.factor(x)) as.character(x) else x)
   data <- data.frame(data)
+  data <- data.frame(sapply(iris, function(x) if(is.numeric(x)) round(x, digits) else x))
   dots <- data[1, ]
   dots[1, ] <- "..."
   nrows <- nrow(data)

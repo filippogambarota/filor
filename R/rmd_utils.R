@@ -49,11 +49,17 @@ get_bib_entries <- function(file = knitr::current_input()){
 #' @importFrom knitr current_input
 #' @importFrom cli cli_alert_success
 #'
-write_bib_rmd <- function(file = knitr::current_input(), input_bib, output_bib){
+write_bib_rmd <- function(file = knitr::current_input(), input_bib, output_bib, get_file = FALSE){
   bib_entries <- get_bib_entries(file)
   bib_entries_rx <- paste0(bib_entries, collapse = "|") # collapse patterns
   # Thanks to https://stackoverflow.com/a/68221000
-  bibfile <- paste(readLines(input_bib), collapse = "\n")
+  if(is_valid_url(input_bib)){
+    tempbib <- tempfile(fileext = ".bib")
+    download.file(input_bib, tempbib, quiet = TRUE)
+  }else{
+    tempbib <- input_bib
+  }
+  bibfile <- paste(readLines(tempbib), collapse = "\n")
   bibfile <- unlist(strsplit(bibfile, "@"))
   bibfile_sub <- bibfile[grepl(bib_entries_rx, bibfile)]
   bibfile_sub <- gsub("\n\n", "\n", bibfile_sub) # removing double \n
@@ -62,7 +68,11 @@ write_bib_rmd <- function(file = knitr::current_input(), input_bib, output_bib){
   writeLines(bibfile_sub, output_bib)
   msg <- sprintf("%s with %s entries created!", output_bib, nbib)
   cli::cli_alert_success(msg)
-  invisible(bibfile_sub)
+  if(get_file){
+    invisible(bibfile_sub)
+  }else{
+    invisible(output_bib)
+  }
 }
 
 #' show_file

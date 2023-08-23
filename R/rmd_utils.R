@@ -43,7 +43,7 @@ get_bib_entries <- function(file = knitr::current_input()){
 #' @param file character that indicate the input file
 #' @param input_bib character that indicate the input \code{.bib} file
 #' @param output_bib character that indicate the output \code{.bib} file
-#'
+#' @param get_file logical should the raw file be invisibly returned
 #' @return the bibfile
 #' @export
 #' @importFrom knitr current_input

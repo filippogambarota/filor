@@ -24,3 +24,6 @@ Imports:
     rmarkdown
 RoxygenNote: 7.2.3
 URL: https://filippogambarota.github.io/filor/
+Suggests: 
+    testthat (>= 3.0.0)
+Config/testthat/edition: 3

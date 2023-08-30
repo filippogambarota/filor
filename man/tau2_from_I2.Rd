@@ -9,7 +9,7 @@ tau2_from_I2(I2, vi)
 \arguments{
 \item{I2}{the I squared value}
 
-\item{vi}{the effect size sampling variability}
+\item{vi}{the "typical" effect size sampling variability}
 }
 \value{
 the tau2 value

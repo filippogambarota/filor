@@ -1,7 +1,7 @@
 #' tau2_from_I2
 #'
 #' @param I2 the I squared value
-#' @param vi the effect size sampling variability
+#' @param vi the "typical" effect size sampling variability
 #'
 #' @return the tau2 value
 #' @export

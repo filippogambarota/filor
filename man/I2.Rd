@@ -4,10 +4,10 @@
 \alias{I2}
 \title{I2}
 \usage{
-I2(tau, vi)
+I2(tau2, vi)
 }
 \arguments{
-\item{tau}{the standard error (tau)}
+\item{tau2}{the heterogeneity}
 
 \item{vi}{the typical sampling variability}
 }

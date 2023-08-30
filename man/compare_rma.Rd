@@ -4,14 +4,20 @@
 \alias{compare_rma}
 \title{compare_rma}
 \usage{
-compare_rma(...)
+compare_rma(..., extra_params = NULL)
+
+compare_rma(..., extra_params = NULL)
 }
 \arguments{
-\item{...}{models of class \code{rma.uni} or \code{rma.mv}}
+\item{...}{models to be compared}
+
+\item{extra_params}{a vector of (extra) parameters to be extracted. These are the elements of the \code{rma.uni} objects.}
 }
 \value{
 a dataframe with coefficients
+
+a dataframe
 }
 \description{
-compare_rma
+Put in a dataframe one or more models fitted with \code{metafor::rma.uni} for a nice visual comparison.
 }

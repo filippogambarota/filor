@@ -32,10 +32,19 @@ get_rmd_comments <- function(file, exclude = c("#SETUP"), write = TRUE){
 #' @export
 #'
 get_bib_entries <- function(file = knitr::current_input()){
-  lines <- paste(readLines(file, warn = FALSE), collapse = "")
-  regex <- "(?<=@)([a-zA-Z0-9-]+)(?=\\]|,|;)"
+  lines <- readLines(file, warn = FALSE)
+  # removing yaml
+  yaml <- grep("^---$", lines)
+  lines <- lines[-c(1:29)]
+  lines <- paste(lines, collapse = "")
+
+  regex <- "(?<=@)([a-zA-Z0-9-]+)(?=|,|;)"
   matches <- regmatches(lines, gregexpr(regex, lines, perl = TRUE))
-  unique(unlist(matches))
+  matches <- unique(unlist(matches))
+
+  # exclude crossrefs
+  crefs <- c("fig-", "tbl-", "eq-", "sec-", "thm-", "lem-", "cor-", "prp-", "cnj-", "def-", "exm-", "exr-")
+  matches[!grepl(paste0(crefs, collapse = "|"), matches)]
 }
 
 #' write_bib_rmd

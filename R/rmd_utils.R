@@ -173,7 +173,7 @@ get_chunk_labels <- function(file, output = NULL, as_captions = FALSE){
 get_funs <- function(files){
   funs <- lapply(files, function(file){
     file <- suppressWarnings(readLines(file))
-    cutpoints <- grep("<- function", file)
+    cutpoints <- grep("^\\S*\\s*<-\\s*function", file)
     cutpoints[length(cutpoints) + 1] <- length(file)
 
     out <- vector(mode = "list", length = length(cutpoints)-1)

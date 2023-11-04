@@ -227,3 +227,41 @@ remove_revision <- function(file, out = NULL){
                  cli::col_green(basename(file)))
   cli::cli_alert_success(msg)
 }
+
+#' scount
+#' @description
+#' A safe counter useful for rmarkdown/quarto documents
+#' @export
+#'
+scount <- function(){
+  env <- new.env()
+  env$n <- 0
+  update_n <-
+    rlang::new_function(
+      args = NULL,
+      body =
+        rlang::expr({
+          assign("n", n+1, envir = env)
+          n
+        }),
+      env = env
+    )
+  update_n
+}
+
+#' rename_figs
+#' @description
+#' Knitr hook for creating a copy of figures named in progressive order (e.g., Figure 1) instead of the chunk label
+#'
+#' @param prefix character to be placed before the actual name. Default to "figure"
+#'
+#' @export
+#'
+rename_figs <- function(prefix = "figure"){
+  nfig <- scount()
+  function(x){
+    filename <- sprintf("%s%s.%s", prefix, nfig(), tools::file_ext(x))
+    x2 <- file.path(dirname(x), filename)
+    if (file.copy(x, x2)) x2 else x
+  }
+}

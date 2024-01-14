@@ -5,9 +5,6 @@
 #' @param which_files a character vector with file extensions to check.
 #' @param dir starting directory from which an iterative search
 #' is performed
-#' @importFrom cli cli_alert_success
-#' @importFrom cli cli_alert_info
-#' @importFrom cli col_green
 #' @export
 #'
 
@@ -49,7 +46,6 @@ success <- function(msg){
 #' @param index Integer that indicate the current iteration
 #'
 #' @export
-#' @importFrom cli cli_alert_success
 #'
 pb <- function(niter, index){
   step <- niter/10

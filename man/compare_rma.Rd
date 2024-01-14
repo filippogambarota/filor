@@ -5,8 +5,6 @@
 \title{compare_rma}
 \usage{
 compare_rma(..., extra_params = NULL)
-
-compare_rma(..., extra_params = NULL)
 }
 \arguments{
 \item{...}{models to be compared}
@@ -14,8 +12,6 @@ compare_rma(..., extra_params = NULL)
 \item{extra_params}{a vector of (extra) parameters to be extracted. These are the elements of the \code{rma.uni} objects.}
 }
 \value{
-a dataframe with coefficients
-
 a dataframe
 }
 \description{

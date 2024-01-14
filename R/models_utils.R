@@ -145,6 +145,10 @@ odds <- function(p){
 #' @return the odds ratio
 #' @export
 #'
-odds_ratio <- function(pn, pd){
-  odds(pn) / odds(pd)
+odds_ratio <- function(pn, pd = NULL){
+  if(length(pn) > 1 & is.null(pd)){
+    odds(pn[1]) / odds(pn[2])
+  }else{
+    odds(pn) / odds(pd)
+  }
 }

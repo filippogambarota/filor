@@ -4,7 +4,7 @@
 \alias{odds_ratio}
 \title{odds_ratio}
 \usage{
-odds_ratio(pn, pd)
+odds_ratio(pn, pd = NULL)
 }
 \arguments{
 \item{pn}{numeric the probability at the numerator}

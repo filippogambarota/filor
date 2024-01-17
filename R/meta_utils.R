@@ -117,15 +117,21 @@ summary_rma <- function(x,
 #' Put in a dataframe one or more models fitted with \code{metafor::rma.uni} for a nice visual comparison.
 #'
 #' @param ... models to be compared
+#' @param fitlist a list of models instead of using `...`. When `fitlist` is provided `...` are ignored.
 #' @param extra_params a vector of (extra) parameters to be extracted. These are the elements of the \code{rma.uni} objects.
 #'
 #' @return a dataframe
 #' @export
 #'
-compare_rma <- function(..., extra_params = NULL) {
-  fitnames <- as.list(substitute(...()))
-  fits <- list(...)
-  sums <- lapply(fits, summary_rma, extra_params = extra_params)
+compare_rma <- function(..., fitlist = NULL, extra_params = NULL) {
+  if(!is.null(fitlist)){
+    fits <- fitlist
+    fitnames <- names(fitlist)
+  }else{
+    fits <- list(...)
+    fitnames <- as.list(substitute(...()))
+  }
+  sums <- lapply(fits, filor::summary_rma, extra_params = extra_params)
   sums <- do.call(rbind, sums)
   out <- data.frame(t(sums))
   setNames(out, fitnames)

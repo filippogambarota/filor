@@ -4,10 +4,12 @@
 \alias{compare_rma}
 \title{compare_rma}
 \usage{
-compare_rma(..., extra_params = NULL)
+compare_rma(..., fitlist = NULL, extra_params = NULL)
 }
 \arguments{
 \item{...}{models to be compared}
+
+\item{fitlist}{a list of models instead of using `...`. When `fitlist` is provided `...` are ignored.}
 
 \item{extra_params}{a vector of (extra) parameters to be extracted. These are the elements of the \code{rma.uni} objects.}
 }

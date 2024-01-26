@@ -135,3 +135,14 @@ is_valid_url <- function(string) {
   pattern <- "^www\\.|^https:\\/\\/"
   grepl(pattern, string)
 }
+
+#' Create a badge of OSF
+#'
+#' @param link
+#'
+#' @return the link to be used
+#' @export
+#'
+osf_badge <- function(link){
+  sprintf("https://img.shields.io/badge/OSF-%s-337AB7", link)
+}

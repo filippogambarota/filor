@@ -25,3 +25,19 @@ letter <- function(...) {
                           template = template
   )
 }
+
+#' Output formats for filor
+#'
+#' @param \dots Arguments passed to \code{pdf_document}.
+#'
+#' @return An R Markdown output format object.
+#'
+#' @importFrom rmarkdown pdf_document
+#' @export
+review <- function(...) {
+  template <- system.file("rmarkdown/templates/review/resources/review-template.tex",
+                          package="filor")
+  rmarkdown::pdf_document(...,
+                          template = template
+  )
+}

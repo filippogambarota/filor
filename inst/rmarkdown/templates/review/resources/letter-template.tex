@@ -1,0 +1,71 @@
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Recommendation Letter (better one page, but more pages would also be fine)
+% LaTeX/Overleaf Template
+% Version 1.0 (December 24, 2022)
+% This file is an original template
+%
+% Authors: Yidian Wang
+% (email: wangydian@163.com)
+% Happy to hear any suggestions
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%!TEX program = xelatex
+\PassOptionsToPackage{quiet}{fontspec}
+\documentclass[12pt,a4paper]{letter}
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{graphicx}
+\usepackage[left=2.75cm, right=2.75cm, top=1.50cm, bottom=1.50cm]{geometry}
+\usepackage{tabularx}
+\usepackage{setspace}
+\usepackage{color}
+\usepackage{multirow}
+\usepackage{xcolor}
+\usepackage[colorlinks]{hyperref}
+\setlength{\parindent}{0pt} %Paragraph indentation
+\setlength{\parskip}{1em} %Vertical space between paragraphs
+\definecolor{unipd}{HTML}{9B0014}
+\pagenumbering{gobble}
+
+
+\begin{document}
+%-----------------------------Letterhead-----------------------------%
+%%%Note: please do not change anything
+	\begin{minipage}[c]{0.25\linewidth}
+			\centering
+			\includegraphics[height=3cm]{img/logo.pdf}
+			\vspace{-0.5em}
+	\end{minipage}
+\hfill %Horizontal fill
+    \begin{minipage}[c]{21.5em}
+        \raggedright
+        \footnotesize{\textbf{\textcolor{unipd}{Department of Developmental Psychology and Socialization}}} \\
+        \footnotesize{University of Padova} \\
+        \footnotesize{Via Venezia 8, 35131, Padova, Italy}
+    \end{minipage}
+\vspace{3em}% vetor space
+\rule{\linewidth}{1pt} % Horizontal rule
+\vspace{-3em}% make the date more close to the horizontal line
+%-----------------------------text-----------------------------%
+%%%Note: you can edit text below
+
+\hfill
+\begin{tabular}{l @{}}
+	$date$ \\ % Date
+\end{tabular}
+%%%Note: your name replaces Jay Chou
+\vspace{2em}
+
+$body$
+
+%%%Note:add signature
+\includegraphics[height=2.5em]{img/signature.png}\\
+%\vspace{1em}
+\rule{5cm}{1pt} \\% Horizontal rule
+%%%Note:prof.'s name replaces Andy Lau
+\small{\textbf{\textcolor{unipd}{$author$}}} \\
+\small{$role$}\\
+\small{$affiliation$} \\
+\small{$university$} \\
+\end{document}

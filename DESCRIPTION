@@ -22,7 +22,7 @@ Imports:
     qpdf,
     stringr,
     rmarkdown
-RoxygenNote: 7.2.3
+RoxygenNote: 7.3.1
 URL: https://filippogambarota.github.io/filor/
 Suggests: 
     testthat (>= 3.0.0)

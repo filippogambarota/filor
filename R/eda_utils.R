@@ -139,6 +139,21 @@ ncor <- function(p){
   (p^2 - p)/2
 }
 
+#' rdim
+#' @description
+#' Calculate the size of the correlation matrix given the number of unique correlations
+#' @param k the number of unique correlations
+#' @return the size of the correlation matrix
+#'
+rdim <- function(k){
+  p <- (1 + sqrt(1 + 8 * k)) / 2
+  if (p %% 1 == 0) {
+    return(as.integer(p))
+  } else {
+    stop("The provided number of unique correlations does not correspond to a valid correlation matrix size.")
+  }
+}
+
 #' getcors
 #' @description extract the off-diagonal elements of a matrix
 #' @param x a matrix

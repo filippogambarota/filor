@@ -163,3 +163,20 @@ r_to_z <- function(r){
 z_to_r <- function(z){
   tanh(z)
 }
+
+#' rmat
+#' @description
+#' create a correlation matrix given the vector x of unique correlations
+#'
+#' @param x
+#'
+#' @return the correlation matrix
+#' @export
+#'
+rmat <- function(x){
+  p <- rdim(length(x))
+  R <- diag(p)
+  R[lower.tri(R)] <- x
+  R[upper.tri(R)] <- t(R)[upper.tri(R)]
+  R
+}

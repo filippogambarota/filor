@@ -33,3 +33,48 @@ collapse_rows <- function(data, cols, to = NA){
   ndata <- cbind(ndata, ncols)
   ndata[, names(data)]
 }
+
+word_count <- function(file){
+  file <- readLines("notes.md")
+
+  p_start <- "#WC-START"
+  p_end <- "#WC-END"
+
+  # remove empty lines
+  file <- file[!grepl("^\\s*$", file)]
+
+  start <- grep(p_start, file)
+  end <- grep(p_end, file)
+
+  if(length(start) == 0 | length(end) == 0){
+    parts <- mapply(function(s, e) file[s:e], start, end)
+    parts <- lapply(parts, function(p) p[!(grepl(p_start, p) | grepl(p_end, p))])
+  }else{
+    parts <- list(file)
+  }
+
+  parts <- lapply(parts, function(x) paste0(x, collapse = " "))
+
+  nwords <- sapply(parts, function(x) lengths(strsplit(x, ' ')))
+  nchars <- sapply(parts, function(x) nchar(x))
+  nchars_nows <- sapply(parts, function(x) nchar(gsub(" ", "", x)))
+
+  out <- lapply(1:length(parts), function(i) list(nwords = nwords[i], nchars = nchars[i], nchars_nows = nchars_nows[i]))
+  out$total$nwords <- sum(nwords)
+  out$total$nchars <- sum(nchars)
+  out$total$nchars_nows <- sum(nchars_nows)
+  out <- out[c(length(out), (1:(length(out) - 1)))]
+
+  for(i in 1:length(out)){
+    if(i == 1){
+      cat("######", "Total", "\n\n")
+    } else{
+      cat("######", "Section", i, "\n\n")
+    }
+    cat("Number of Words:", out[[i]]$nwords, "\n")
+    cat("Number of Characters:", out[[i]]$nchars, "\n")
+    cat("Number of Characters (no white spaces)", out[[i]]$nchars_nows, "\n\n")
+  }
+
+  invisible(out)
+}

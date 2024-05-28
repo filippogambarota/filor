@@ -103,3 +103,51 @@ named_list <- function(...){
   return(input_values)
 }
 
+#' mseq
+#' @description create a sequence with multiple from and to vectors
+#' @param from vector of integers for starting points of the sequence. Default to 1
+#' @param to vector of integers for ending points of the sequence. Default to 1
+#' @return a vector of integers with all the sequences
+#' @export
+#'
+mseq <- function(from = 1, to = 1){
+  res <- mapply(function(f, t) seq(f, t, by = 1), from, to, SIMPLIFY = FALSE)
+  unlist(res)
+}
+
+#' coridx
+#' @description create the correlation names given the size of the correlation matrix
+#' @param p integer for the size of the correlation matrix
+#' @return a character vector with all the correlations
+#' @export
+#'
+coridx <- function(p){
+  if(p == 1){
+    stop("The dimension of the correlation matrix should be >= 2")
+  }
+  cc <- gtools::combinations(p, 2)
+  paste0(cc[, 1], ".", cc[, 2])
+}
+
+#' ncor
+#' @description calculate the number of correlations given the size of the correlation matrix. In practice is the same as counting the number of elements in the upper/lower triangle of the correlation matrix
+#' @param p integer for the size of the correlation matrix
+#' @return the number of correlations
+#' @export
+#'
+ncor <- function(p){
+  (p^2 - p)/2
+}
+
+#' getcors
+#' @description extract the off-diagonal elements of a matrix
+#' @param x a matrix
+#' @return the number of correlations
+#' @export
+#'
+getcors <- function(x){s
+  if(!is.matrix(x)){
+    stop("x need to be a matrix!")
+  }
+  x[upper.tri(x, diag = FALSE)]
+}

@@ -136,3 +136,30 @@ compare_rma <- function(..., fitlist = NULL, extra_params = NULL) {
   out <- data.frame(t(sums))
   setNames(out, fitnames)
 }
+
+
+#' r_to_z
+#' @description
+#' convert a correlation into the Fisher's z
+#'
+#' @param r the correlation
+#'
+#' @return the Fisher's z transformed correlation
+#' @export
+#'
+r_to_z <- function(r){
+  atanh(r)
+}
+
+#' z_to_r
+#' @description
+#' convert a Fisher's z into a correlation coefficient
+#'
+#' @param z the Fisher's value
+#'
+#' @return the correlation
+#' @export
+#'
+z_to_r <- function(z){
+  tanh(z)
+}

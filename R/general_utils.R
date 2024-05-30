@@ -146,3 +146,24 @@ is_valid_url <- function(string) {
 osf_badge <- function(link){
   sprintf("https://img.shields.io/badge/OSF-%s-337AB7", link)
 }
+
+
+#' try_seed
+#' @description
+#' Repeat an R expression a certain number of times with a random seed. Each iteration is self-paced by pressing a key. The random seed is printed along with the result of the
+#' @param expr an R expression
+#' @param maxrun the maximum number of iterations
+#' @param digits the number of digits for the random seed
+#' @export
+#'
+try_seed <- function(expr, maxrun = 100, digits = 4) {
+  expr <- substitute(expr)
+  min_seed <- (10^(digits - 1))
+  max_seed <- (10^(digits)) - 1
+  for (i in 1:maxrun) {
+    seed <- round(runif(1, min_seed, max_seed))
+    set.seed(seed)
+    eval(expr, envir = parent.frame())
+    readline(sprintf("seed = %s, Press space to continue!", seed))
+  }
+}

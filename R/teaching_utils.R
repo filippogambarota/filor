@@ -238,3 +238,28 @@ trim_df <- function(data, n = 4, digits = 3){
   rownames(trimmed) <- NULL
   return(trimmed)
 }
+
+#' sampdist
+#' @description
+#' Generate a sampling distribution from a statistics applied to samples generated from a normal distribution.
+#'
+#' @param n sample size
+#' @param mean the mean of the normal distribution
+#' @param sd the standard deviation of the normal distribution
+#' @param B the number of simulations
+#' @param FUN the function to be applied to each sample
+#'
+#' @return a vector of length B with the sampling distribution
+#' @export
+#'
+#' @examples
+#' sampdist(30, 0, 1, B = 10, FUN = mean)
+sampdist <- function(n, mean = 0, sd = 1, B = 1e3, FUN){
+  replicate(
+    B,
+    {
+      x <- rnorm(n, mean, sd)
+      FUN(x)
+    }
+  )
+}

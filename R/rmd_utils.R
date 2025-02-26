@@ -265,3 +265,47 @@ rename_figs <- function(prefix = "figure"){
     if (file.copy(x, x2)) x2 else x
   }
 }
+
+#' filter_output
+#'
+#' @param x the result of a function to capture e.g. summary(x)
+#' @param lines a vector of line numbers to extract or a pattern as "from|to" where from and to are regex mapping the lines to extract.
+#' @param cat logical indicating if using cat() for the output
+#'
+#' @returns NULL
+#' @export
+#'
+#' @examples
+#' fit <- lm(mpg ~ hp, data = mtcars)
+#' filter_output(summary(fit), 1:5)
+filter_output <- function(x, lines = NULL, cat = TRUE){
+  res <- capture.output(x)
+  if(is.null(lines)) lines <- 1:length(res)
+
+  if(!is.numeric(lines)){
+    if(length(lines) != 1){
+      stop("When lines is not a numeric vector, need to be a character vector of length 1 with regex 'start|end'!")
+    }
+
+    rr <- unlist(strsplit(lines, split = "\\|"))
+    lines <- grep(rr[1], res):grep(rr[2], res)
+  }
+
+  if(cat){
+    cat(res[lines], sep = "\n")
+  }
+}
+
+#' qrmd2R
+#'
+#' @param x path of an rmd or qmd file to convert into R script
+#'
+#' @export
+#'
+qrmd2R <- function(x){
+  out <- sprintf("%s.R", xfun::sans_ext(basename(x)))
+  knitr::purl(input = x,
+              output = file.path(dirname(x), out),
+              documentation = 2,
+              quiet = TRUE)
+}

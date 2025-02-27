@@ -152,3 +152,67 @@ odds_ratio <- function(pn, pd = NULL){
     odds(pn) / odds(pd)
   }
 }
+
+#' wald_test
+#'
+#' @param x a model. Currently supported classes are `lmerMod`, `glmerMod`, `lm` and `glm`
+#' @param h0 a vector of null hypothesis, default to 0
+#' @param btt vector of coefficents names to test. Default to `NULL` (all coefficients)
+#' @param alternative character indicating the side of the hypothesis
+#' @param alpha the alpha level, default to 0.05
+#'
+#' @return a dataframe
+#' @export
+#'
+#' @examples
+#' fit <- lm(Sepal.Lenght ~ Species, data = iris)
+#' wald_test(fit)
+wald_test <- function(x, h0 = 0, btt = NULL, alternative = "two.sided", alpha = 0.05){
+  coefs <- data.frame(summary(x)$coefficients)
+  coefs$param <- rownames(coefs)
+  rownames(coefs) <- NULL
+
+  # check if h0 is a vector or not
+  if(length(h0) != 1 & length(h0) != nrow(coefs)){
+    stop("When h0 is a vector, need to be of length the number of coefficients in the model!")
+  }
+
+  if(inherits(x, c("glm", "glmerMod"))){
+    df <- Inf
+  } else if(inherits(x, "lmerMod")){
+    if(!inherits(x, "lmerModLmerTest")){
+      stop("lmerMod models require lmerTest to calculate p-values!")
+    }
+    df <- coefs$df
+  } else{
+    df <- df.residual(x)
+  }
+
+  if(inherits(x, "lmerMod")){
+    names(coefs) <- c("b", "se", "df", "stat", "pval", "param")
+  } else{
+    coefs$df <- df
+    names(coefs) <- c("b", "se", "stat", "pval", "param", "df")
+  }
+
+  stat <- (coefs$b - h0) / coefs$se
+  pval <- exp(pt(-abs(stat), df = df, log.p = TRUE))
+
+  if(alternative == "two.sided"){
+    pval <- pval * 2
+  } else if(alternative == "less"){
+    pval <- 1 - pval
+  }
+
+  coefs$stat <- stat
+  coefs$pval <- pval
+  coefs$h0 <- h0
+
+  if(!is.null(btt)){
+    coefs <- coefs[coefs$param %in% btt, ]
+  }
+
+  return(coefs)
+
+}
+

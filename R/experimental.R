@@ -78,3 +78,13 @@ word_count <- function(file){
 
   invisible(out)
 }
+
+chd <- function(x, l = 1, toclip = TRUE, max = 75){
+  hash <- paste0(rep("#", l), collapse = "")
+  sep <- paste0(rep("-", max - (nchar(hash) + 2) - nchar(x)), collapse = "")
+  res <- sprintf("%s %s %s", hash, x, sep)
+  if(toclip){
+    clipr::write_clip(res)
+  }
+  cat(res)
+}

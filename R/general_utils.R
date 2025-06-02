@@ -167,3 +167,27 @@ try_seed <- function(expr, maxrun = 100, digits = 4) {
     readline(sprintf("seed = %s, Press space to continue!", seed))
   }
 }
+
+#' Filter a List by Class
+#'
+#' Filters a list, keeping or excluding elements based on their class.
+#'
+#' @param x A list of R objects.
+#' @param class A character string specifying the class to filter by.
+#' @param not Logical; if `TRUE`, elements *not* inheriting from `class` are kept. Default is `FALSE`.
+#'
+#' @return A list containing the elements of `x` that (do not) inherit from the specified class.
+#'
+#' @examples
+#' lst <- list(1L, "text", 3.14, list(a = 1))
+#' cfilter(lst, "numeric")  # returns elements that are numeric
+#' cfilter(lst, "character")  # returns character elements
+#' cfilter(lst, "numeric", not = TRUE)  # returns elements that are NOT numeric
+#'
+#' @export
+cfilter <- function(x, class, not = FALSE){
+  keep <- sapply(x, function(e) any(class %in% class(e)))
+  if(not) keep <- !keep
+  x[keep]
+}
+

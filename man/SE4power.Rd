@@ -4,7 +4,7 @@
 \alias{SE4power}
 \title{Calculate Standard Error (SE) associated with a desired level of statistical power}
 \usage{
-SE4power(b = NA, power = 0.8, alpha = 0.05, alternative = "two.sided")
+SE4power(b, power = 0.8, alpha = 0.05, alternative = "two.sided")
 }
 \arguments{
 \item{power}{The desired level of statistical power}

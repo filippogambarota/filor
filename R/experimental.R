@@ -98,7 +98,7 @@ chd <- function(x, l = 1, toclip = TRUE, max = 75){
 #'
 #' @return The numerical value of the Standard Error (SE) associated with the above arguments
 #' @export
-SE4power = function(b = NA, power = 0.80, alpha = 0.05, alternative = "two.sided"){
+SE4power = function(b, power = 0.80, alpha = 0.05, alternative = "two.sided"){
   alternative <- match.arg(alternative, choices = c("two.sided","one.sided"))
   if(alternative == "two.sided") {
     alpha <- alpha/2

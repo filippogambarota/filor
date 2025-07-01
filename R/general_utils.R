@@ -191,3 +191,19 @@ cfilter <- function(x, class, not = FALSE){
   x[keep]
 }
 
+#' sourceR
+#' @description
+#' Load one or more R functions from R/ folder (or any custom folder)
+#'
+#' @param files files to source. Default to NULL (i.e., all files)
+#' @param path path with .R files. Default to "R/" as in standard package-like projects.
+#'
+#' @export
+#'
+sourceR <- function(files = NULL, path = "R"){
+  rfiles <- list.files(path, pattern = "*.[R|r]", full.names = TRUE)
+  if(!is.null(files)){
+    rfiles <- rfiles[grepl(paste0(files, collapse = "|"), rfiles)]
+  }
+  for(r in rfiles) source(r, echo = FALSE)
+}

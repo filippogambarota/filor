@@ -216,3 +216,14 @@ wald_test <- function(x, h0 = 0, btt = NULL, alternative = "two.sided", alpha = 
 
 }
 
+#' conf2quant
+#'
+#' @param conf.level
+#'
+#' @export
+#'
+conf2quant <- function(conf.level = 0.95){
+  alpha <- 1 - conf.level
+  c(lb = alpha/2, ub = 1 - alpha/2)
+}
+

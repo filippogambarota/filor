@@ -8,15 +8,15 @@
 #' @export
 #' @return list of comments
 #'
-get_rmd_comments <- function(file, exclude = c("#SETUP"), write = TRUE){
+get_rmd_comments <- function(file, exclude = c("#SETUP"), write = TRUE) {
   exclude <- paste0(exclude, collapse = "|")
   file_lines <- readLines(file, warn = FALSE)
   file_lines <- paste0(file_lines, collapse = "")
   pattern <- "<!--\\s*(.*?)\\s*-->"
-  regmatch <- gregexec(pattern,file_lines)
+  regmatch <- gregexec(pattern, file_lines)
   comments <- regmatches(file_lines, regmatch)[[1]][2, ]
   comments <- comments[!grepl(exclude, comments)]
-  if(write & length(comments) > 0){
+  if (write & length(comments) > 0) {
     cat(paste("-", comments), sep = "\n")
   }
   invisible(comments)
@@ -31,7 +31,7 @@ get_rmd_comments <- function(file, exclude = c("#SETUP"), write = TRUE){
 #' @importFrom knitr current_input
 #' @export
 #'
-get_bib_entries <- function(file = knitr::current_input()){
+get_bib_entries <- function(file = knitr::current_input()) {
   lines <- readLines(file, warn = FALSE)
   # removing yaml
   yaml <- grep("^---$", lines)
@@ -43,7 +43,20 @@ get_bib_entries <- function(file = knitr::current_input()){
   matches <- unique(unlist(matches))
 
   # exclude crossrefs
-  crefs <- c("fig-", "tbl-", "eq-", "sec-", "thm-", "lem-", "cor-", "prp-", "cnj-", "def-", "exm-", "exr-")
+  crefs <- c(
+    "fig-",
+    "tbl-",
+    "eq-",
+    "sec-",
+    "thm-",
+    "lem-",
+    "cor-",
+    "prp-",
+    "cnj-",
+    "def-",
+    "exm-",
+    "exr-"
+  )
   matches[!grepl(paste0(crefs, collapse = "|"), matches)]
 }
 
@@ -58,14 +71,19 @@ get_bib_entries <- function(file = knitr::current_input()){
 #' @importFrom knitr current_input
 #' @importFrom cli cli_alert_success
 #'
-write_bib_rmd <- function(file = knitr::current_input(), input_bib, output_bib, get_file = FALSE){
+write_bib_rmd <- function(
+  file = knitr::current_input(),
+  input_bib,
+  output_bib,
+  get_file = FALSE
+) {
   bib_entries <- get_bib_entries(file)
   bib_entries_rx <- paste0(bib_entries, collapse = "|") # collapse patterns
   # Thanks to https://stackoverflow.com/a/68221000
-  if(is_valid_url(input_bib)){
+  if (is_valid_url(input_bib)) {
     tempbib <- tempfile(fileext = ".bib")
     download.file(input_bib, tempbib, quiet = TRUE)
-  }else{
+  } else {
     tempbib <- input_bib
   }
   bibfile <- paste(readLines(tempbib), collapse = "\n")
@@ -77,9 +95,9 @@ write_bib_rmd <- function(file = knitr::current_input(), input_bib, output_bib, 
   writeLines(bibfile_sub, output_bib)
   msg <- sprintf("%s with %s entries created!", output_bib, nbib)
   cli::cli_alert_success(msg)
-  if(get_file){
+  if (get_file) {
     invisible(bibfile_sub)
-  }else{
+  } else {
     invisible(output_bib)
   }
 }
@@ -93,17 +111,17 @@ write_bib_rmd <- function(file = knitr::current_input(), input_bib, output_bib, 
 #' @export
 #'
 #'
-show_file <- function(file,
-                      how = c("bare", "generic", "code"),
-                      engine = NULL){
+show_file <- function(file, how = c("bare", "generic", "code"), engine = NULL) {
   how <- match.arg(how)
   lines <- suppressWarnings(readLines(file))
-  if(how == "generic"){
+  if (how == "generic") {
     cat("```", lines, "```", sep = "\n")
-  }else if(how == "code"){
-    if(is.null(engine)) engine <- "r"
+  } else if (how == "code") {
+    if (is.null(engine)) {
+      engine <- "r"
+    }
     cat(paste0("```", engine), lines, "```", sep = "\n")
-  }else{
+  } else {
     cat(lines, sep = "\n")
   }
   invisible(lines)
@@ -128,7 +146,7 @@ get_caption <- function() {
 #' @return The html code for the hyperlink
 #' @export
 #'
-cap_link <- function(link, text = NULL){
+cap_link <- function(link, text = NULL) {
   if (is.null(text)) {
     text <- link
   }
@@ -144,19 +162,19 @@ cap_link <- function(link, text = NULL){
 #'
 #' @export
 #' @import stringr
-get_chunk_labels <- function(file, output = NULL, as_captions = FALSE){
+get_chunk_labels <- function(file, output = NULL, as_captions = FALSE) {
   lines <- suppressWarnings(readLines(file))
   chunks <- lines[grepl("```\\{", lines)]
   chunks <- stringr::str_extract(chunks, regex("(?<=\\{r).+?(?=,)"))
   chunks <- gsub(" ", "", chunks)
   chunks <- chunks[!is.na(chunks)]
-  if(!is.null(output)){
-    if(as_captions){
+  if (!is.null(output)) {
+    if (as_captions) {
       chunks <- sprintf("(ref:%s) Caption", chunks)
     }
     writeLines(chunks, output)
     invisible(chunks)
-  }else{
+  } else {
     chunks
   }
 }
@@ -170,18 +188,18 @@ get_chunk_labels <- function(file, output = NULL, as_captions = FALSE){
 #' @return a named list with function
 #' @export
 #'
-get_funs <- function(files){
-  funs <- lapply(files, function(file){
+get_funs <- function(files) {
+  funs <- lapply(files, function(file) {
     file <- suppressWarnings(readLines(file))
     cutpoints <- grep("^\\S*\\s*<-\\s*function", file)
     cutpoints[length(cutpoints) + 1] <- length(file)
-    out <- vector(mode = "list", length = length(cutpoints)-1)
-    fun_names <- vector(mode = "character", length = length(cutpoints)-1)
-    if(length(file) != 0){
-      for(i in 1:(length(cutpoints) - 1)){
-        if(i == length(cutpoints) - 1){
+    out <- vector(mode = "list", length = length(cutpoints) - 1)
+    fun_names <- vector(mode = "character", length = length(cutpoints) - 1)
+    if (length(file) != 0) {
+      for (i in 1:(length(cutpoints) - 1)) {
+        if (i == length(cutpoints) - 1) {
           out[[i]] <- file[cutpoints[i]:(cutpoints[i + 1])]
-        }else{
+        } else {
           out[[i]] <- file[cutpoints[i]:(cutpoints[i + 1] - 1)]
         }
 
@@ -205,7 +223,7 @@ get_funs <- function(files){
 #'
 #' @export
 #'
-print_fun <- function(fun){
+print_fun <- function(fun) {
   cat("```r", fun, "```", sep = "\n")
 }
 
@@ -216,15 +234,19 @@ print_fun <- function(fun){
 #'
 #' @export
 #'
-remove_revision <- function(file, out = NULL){
+remove_revision <- function(file, out = NULL) {
   lines <- suppressWarnings(readLines(file))
   lines <- gsub("\\\\brev[ ]{0,1}", "", lines)
   lines <- gsub("[ ]{0,1}\\\\erev", "", lines)
-  if(is.null(out)) out <- tools::file_path_sans_ext(file)
+  if (is.null(out)) {
+    out <- tools::file_path_sans_ext(file)
+  }
   out <- paste0(out, "_norev.", tools::file_ext(file))
   writeLines(lines, out)
-  msg <- sprintf("All revision removed from %s! :)",
-                 cli::col_green(basename(file)))
+  msg <- sprintf(
+    "All revision removed from %s! :)",
+    cli::col_green(basename(file))
+  )
   cli::cli_alert_success(msg)
 }
 
@@ -233,17 +255,16 @@ remove_revision <- function(file, out = NULL){
 #' A safe counter useful for rmarkdown/quarto documents
 #' @export
 #'
-scount <- function(){
+scount <- function() {
   env <- new.env()
   env$n <- 0
   update_n <-
     rlang::new_function(
       args = NULL,
-      body =
-        rlang::expr({
-          assign("n", n+1, envir = env)
-          n
-        }),
+      body = rlang::expr({
+        assign("n", n + 1, envir = env)
+        n
+      }),
       env = env
     )
   update_n
@@ -257,9 +278,9 @@ scount <- function(){
 #'
 #' @export
 #'
-rename_figs <- function(prefix = "figure"){
+rename_figs <- function(prefix = "figure") {
   nfig <- scount()
-  function(x){
+  function(x) {
     filename <- sprintf("%s%s.%s", prefix, nfig(), tools::file_ext(x))
     x2 <- file.path(dirname(x), filename)
     if (file.copy(x, x2)) x2 else x
@@ -278,20 +299,24 @@ rename_figs <- function(prefix = "figure"){
 #' @examples
 #' fit <- lm(mpg ~ hp, data = mtcars)
 #' filter_output(summary(fit), 1:5)
-filter_output <- function(x, lines = NULL, cat = TRUE){
+filter_output <- function(x, lines = NULL, cat = TRUE) {
   res <- capture.output(x)
-  if(is.null(lines)) lines <- 1:length(res)
+  if (is.null(lines)) {
+    lines <- 1:length(res)
+  }
 
-  if(!is.numeric(lines)){
-    if(length(lines) != 1){
-      stop("When lines is not a numeric vector, need to be a character vector of length 1 with regex 'start|end'!")
+  if (!is.numeric(lines)) {
+    if (length(lines) != 1) {
+      stop(
+        "When lines is not a numeric vector, need to be a character vector of length 1 with regex 'start|end'!"
+      )
     }
 
     rr <- unlist(strsplit(lines, split = "\\|"))
     lines <- grep(rr[1], res):grep(rr[2], res)
   }
 
-  if(cat){
+  if (cat) {
     cat(res[lines], sep = "\n")
   }
 }
@@ -302,10 +327,12 @@ filter_output <- function(x, lines = NULL, cat = TRUE){
 #'
 #' @export
 #'
-qrmd2R <- function(x){
+qrmd2R <- function(x) {
   out <- sprintf("%s.R", xfun::sans_ext(basename(x)))
-  knitr::purl(input = x,
-              output = file.path(dirname(x), out),
-              documentation = 2,
-              quiet = TRUE)
+  knitr::purl(
+    input = x,
+    output = file.path(dirname(x), out),
+    documentation = 2,
+    quiet = TRUE
+  )
 }

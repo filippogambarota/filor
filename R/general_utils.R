@@ -8,8 +8,7 @@
 #' @export
 #'
 
-find_pattern <- function(pattern, which_files = c("R", "Rmd"), dir = "."){
-
+find_pattern <- function(pattern, which_files = c("R", "Rmd"), dir = ".") {
   which_files <- paste0(".", which_files, "$", collapse = "|")
 
   # Getting files
@@ -23,11 +22,11 @@ find_pattern <- function(pattern, which_files = c("R", "Rmd"), dir = "."){
   pattern_times <- pattern_times[pattern_times > 0]
 
   # Formatting
-  if(length(pattern_times) > 0){
+  if (length(pattern_times) > 0) {
     out <- paste(names(files_content), "---", pattern_times, "times")
     out_cli <- ifelse(grepl("R/", out), cli::col_blue(out), out) # Different for R/ files
     msg <- lapply(out_cli, cli::cli_alert_success)
-  }else{
+  } else {
     cli::cli_alert_info(paste("No files with", cli::col_green(pattern)))
   }
 }
@@ -36,7 +35,7 @@ find_pattern <- function(pattern, which_files = c("R", "Rmd"), dir = "."){
 #' @description fancy success message
 #' @param msg string with the message
 #' @importFrom cli cli_alert_success
-success <- function(msg){
+success <- function(msg) {
   cli::cli_alert_success(msg)
 }
 
@@ -47,13 +46,13 @@ success <- function(msg){
 #'
 #' @export
 #'
-pb <- function(niter, index){
-  step <- niter/10
-  if(i %% step == 0){
-    pr <- paste0(rep("----", index/step), collapse = "")
-    cat("\r", paste0(index/step * 10, "% "), pr, sep = "")
+pb <- function(niter, index) {
+  step <- niter / 10
+  if (i %% step == 0) {
+    pr <- paste0(rep("----", index / step), collapse = "")
+    cat("\r", paste0(index / step * 10, "% "), pr, sep = "")
     utils::flush.console()
-    if(index/step == 10){
+    if (index / step == 10) {
       cat(" ")
       cli::cli_alert_success("")
     }
@@ -68,7 +67,7 @@ pb <- function(niter, index){
 #'
 #' @export
 #'
-conditional <- function(fun){
+conditional <- function(fun) {
   function(..., execute) {
     if (execute) fun(...) else ..1
   }
@@ -82,16 +81,16 @@ conditional <- function(fun){
 #'
 #' @export
 #'
-gh_down_link <- function(x, hyperlink = FALSE, url_name = NULL){
+gh_down_link <- function(x, hyperlink = FALSE, url_name = NULL) {
   xs <- gsub("https://github.com/", "", x)
   xsl <- unlist(strsplit(xs, "/"))
   file <- xsl[(which(xsl %in% c("master", "main")) + 1):length(xsl)]
   file <- paste0(file, collapse = "/")
   url <- sprintf("https://%s.github.io/%s/%s", xsl[1], xsl[2], file)
-  if(hyperlink){
-    if(!is.null(url_name)){
+  if (hyperlink) {
+    if (!is.null(url_name)) {
       url <- sprintf("[%s](%s)", url_name, url)
-    }else{
+    } else {
       url <- sprintf("[%s](%s)", url, url)
     }
   }
@@ -114,8 +113,8 @@ gh_down_link <- function(x, hyperlink = FALSE, url_name = NULL){
 #' all_same(c(1,2,3))  # FALSE
 #' all_same(c(1,1,NA)) # FALSE
 #' all_same(c(1,1,NA), na.rm = TRUE) # TRUE
-all_same <- function(x, na.rm = FALSE){
-  if(na.rm){
+all_same <- function(x, na.rm = FALSE) {
+  if (na.rm) {
     x <- x[!is.na(x)]
   }
   length(unique(x)) == 1
@@ -143,7 +142,7 @@ is_valid_url <- function(string) {
 #' @return the link to be used
 #' @export
 #'
-osf_badge <- function(link){
+osf_badge <- function(link) {
   sprintf("https://img.shields.io/badge/OSF-%s-337AB7", link)
 }
 
@@ -185,9 +184,11 @@ try_seed <- function(expr, maxrun = 100, digits = 4) {
 #' cfilter(lst, "numeric", not = TRUE)  # returns elements that are NOT numeric
 #'
 #' @export
-cfilter <- function(x, class, not = FALSE){
+cfilter <- function(x, class, not = FALSE) {
   keep <- sapply(x, function(e) any(class %in% class(e)))
-  if(not) keep <- !keep
+  if (not) {
+    keep <- !keep
+  }
   x[keep]
 }
 
@@ -200,10 +201,12 @@ cfilter <- function(x, class, not = FALSE){
 #'
 #' @export
 #'
-sourceR <- function(files = NULL, path = "R"){
+sourceR <- function(files = NULL, path = "R") {
   rfiles <- list.files(path, pattern = "*.[R|r]", full.names = TRUE)
-  if(!is.null(files)){
+  if (!is.null(files)) {
     rfiles <- rfiles[grepl(paste0(files, collapse = "|"), rfiles)]
   }
-  for(r in rfiles) source(r, echo = FALSE)
+  for (r in rfiles) {
+    source(r, echo = FALSE)
+  }
 }

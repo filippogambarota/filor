@@ -1,43 +1,50 @@
 #' fpvalue
 #'
 #' @param p numeric. The p value to format
-#' @param limit numeric. the minimum value to print. Default to 0.001
-#' @param tex logical. If TRUE, the result is inserted into two \code{$...$}
-#'
+#' @param digits numeric. The number of digits that the p value should be printed with.
+#' @param omit.p logical. Should the string "p ..." be omitted (e.g., for a table where the header is already "p")
+#' @param tex logical. If TRUE, the latex math symbols are used
+#' @param wrap character. A string that will be pasted before and after the final p value. Default to `NULL` thus empty string. If `NULL` and `tex` is `TRUE` the `$` symbol is used.
 #' @return string with the formatted p value
 #' @export
 #'
 #' @examples
-#' fpvalue(0.001, tex = TRUE)
+#' fpvalue(0.0001, tex = TRUE)
 #' fpvalue(0.001, tex = FALSE)
-fpvalue <- function(p, limit = 0.001, tex = FALSE){
-  p_out <- ifelse(p < limit,
-                  "p < 0.001",
-                  sprintf("p = %s", p))
-  if(tex){
-    p_out <- sprintf("$%s$", p_out)
+fpvalue <- function(
+  p,
+  digits = 3,
+  omit.p = FALSE,
+  tex = FALSE,
+  wrap = NULL
+) {
+  limit <- 10^(-digits)
+
+  if (is.null(wrap)) {
+    if (tex) {
+      wrap <- "$"
+    } else {
+      wrap <- ""
+    }
   }
 
-  return(p_out)
-}
+  sym_min <- if (tex) "\\leq" else "<"
 
-#' colorize
-#' @description thanks to https://bookdown.org/yihui/rmarkdown-cookbook/font-color.html#using-an-r-function-to-write-raw-html-or-latex-code
-#' @param x the text to be formatted
-#' @param color the color to be applied
-#'
-#' @return string with the formatted p value
-#' @importFrom knitr is_html_output
-#' @importFrom knitr is_latex_output
-#' @export
-#'
-#' @examples
-#' colorize("red text", "red")
-colorize <- function(x, color) {
-  if (knitr::is_latex_output()) {
-    sprintf("\\textcolor{%s}{%s}", color, x)
-  } else if (knitr::is_html_output()) {
-    sprintf("<span style='color: %s;'>%s</span>", color,
-            x)
-  } else x
+  if (omit.p) {
+    ptext <- ifelse(
+      p < limit,
+      sprintf("%s %s", sym_min, limit),
+      as.character(round(p, digits))
+    )
+  } else {
+    ptext <- ifelse(
+      p < limit,
+      sprintf("p %s %s", sym_min, limit),
+      sprintf("p = %s", round(p, digits))
+    )
+  }
+
+  ptext <- sprintf("%s%s%s", wrap, ptext, wrap)
+
+  return(ptext)
 }

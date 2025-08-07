@@ -9,9 +9,9 @@ extract_pdf_pages(file, pages, out = NULL)
 \arguments{
 \item{file}{character with the pdf file}
 
-\item{out}{character with the output file name. Default to NULL}
+\item{pages}{integer vector with pdf pages to extract}
 
-\item{slides}{integer vector with pdf pages to extract}
+\item{out}{character with the output file name. Default to NULL}
 }
 \description{
 extract_pdf_pages

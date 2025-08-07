@@ -4,14 +4,18 @@
 \alias{fpvalue}
 \title{fpvalue}
 \usage{
-fpvalue(p, limit = 0.001, tex = FALSE)
+fpvalue(p, digits = 3, omit.p = FALSE, tex = FALSE, wrap = NULL)
 }
 \arguments{
 \item{p}{numeric. The p value to format}
 
-\item{limit}{numeric. the minimum value to print. Default to 0.001}
+\item{digits}{numeric. The number of digits that the p value should be printed with.}
 
-\item{tex}{logical. If TRUE, the result is inserted into two \code{$...$}}
+\item{omit.p}{logical. Should the string "p ..." be omitted (e.g., for a table where the header is already "p")}
+
+\item{tex}{logical. If TRUE, the latex math symbols are used}
+
+\item{wrap}{character. A string that will be pasted before and after the final p value. Default to `NULL` thus empty string. If `NULL` and `tex` is `TRUE` the `$` symbol is used.}
 }
 \value{
 string with the formatted p value
@@ -20,6 +24,6 @@ string with the formatted p value
 fpvalue
 }
 \examples{
-fpvalue(0.001, tex = TRUE)
+fpvalue(0.0001, tex = TRUE)
 fpvalue(0.001, tex = FALSE)
 }

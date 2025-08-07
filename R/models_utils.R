@@ -7,23 +7,23 @@
 #' @return a named list of dataframes
 #' @export
 #'
-leave1out <- function(data, group_var = NULL, keep_full = FALSE){
-
-  if(!is.null(substitute(group_var))){
+leave1out <- function(data, group_var = NULL, keep_full = FALSE) {
+  if (!is.null(substitute(group_var))) {
     group_var <- substitute(group_var)
     group_var_names <- data[[deparse(group_var)]]
     group_var_obj <- as.integer(as.factor(group_var_names))
-
-  }else{
+  } else {
     group_var_obj <- 1:nrow(data) # remove row
     group_var_names <- as.character(group_var_obj)
   }
 
   # make expression to eval (exclude a level)
-  out <- lapply(unique(group_var_obj), function(excl) subset(data, !group_var_obj %in% excl))
+  out <- lapply(unique(group_var_obj), function(excl) {
+    subset(data, !group_var_obj %in% excl)
+  })
   names(out) <- paste0("no_", unique(group_var_names))
 
-  if(keep_full){
+  if (keep_full) {
     out <- c(list("all" = data), out)
   }
 
@@ -37,7 +37,7 @@ leave1out <- function(data, group_var = NULL, keep_full = FALSE){
 #' @return A character with the model formula
 #' @export
 #'
-get_model_formula <- function(fit){
+get_model_formula <- function(fit) {
   deparse(formula(fit))
 }
 
@@ -47,7 +47,7 @@ get_model_formula <- function(fit){
 # extra arguments to predict are passed using ...
 # it works well with pipes %>% or |>
 
-add_predict <- function(data, fit, ...){
+add_predict <- function(data, fit, ...) {
   pr <- stats::predict(fit, newdata = data, ...)
   cbind(data, data.frame(pr))
 }
@@ -76,36 +76,47 @@ model_equation <- function(model, newdata = NULL, ..., only_print = FALSE) {
   model_coeff <- round(model_coeff, 3)
   format_args$x <- abs(model_coeff)
   model_coeff_sign <- sign(model_coeff)
-  model_coeff_prefix <- dplyr::case_when(model_coeff_sign == -1 ~ " - ",
-                                         model_coeff_sign == 1 ~ " + ",
-                                         model_coeff_sign == 0 ~ " + ")
+  model_coeff_prefix <- dplyr::case_when(
+    model_coeff_sign == -1 ~ " - ",
+    model_coeff_sign == 1 ~ " + ",
+    model_coeff_sign == 0 ~ " + "
+  )
   nms <- names(model_coeff[-1])
   # check if there are values to print
-  if(!is.null(newdata)){
+  if (!is.null(newdata)) {
     # check if there are too much values to print
-    if(length(newdata[[1]]) > 3){
+    if (length(newdata[[1]]) > 3) {
       # formatting
-      newdata <- lapply(newdata, function(x) sprintf("[%s ... %s]", x[1], x[length(x)]))
+      newdata <- lapply(newdata, function(x) {
+        sprintf("[%s ... %s]", x[1], x[length(x)])
+      })
     }
 
-    nms <- purrr::reduce2(names(newdata),
-                          as.character(newdata),
-                          .init = nms,
-                          stringr::str_replace)
+    nms <- purrr::reduce2(
+      names(newdata),
+      as.character(newdata),
+      .init = nms,
+      stringr::str_replace
+    )
   }
 
-
   y <- strsplit(as.character(model$call$formula), "~")[[2]]
-  b0 <- paste0(ifelse(model_coeff[1] < 0, "-", ""), do.call(base::format, format_args)[1])
-  bs <- paste0(model_coeff_prefix[-1],
-               do.call(base::format, format_args)[-1],
-               "*",
-               cli::col_blue(nms),
-               sep = "", collapse = "")
+  b0 <- paste0(
+    ifelse(model_coeff[1] < 0, "-", ""),
+    do.call(base::format, format_args)[1]
+  )
+  bs <- paste0(
+    model_coeff_prefix[-1],
+    do.call(base::format, format_args)[-1],
+    "*",
+    cli::col_blue(nms),
+    sep = "",
+    collapse = ""
+  )
 
   model_eqn <- sprintf("%s ~ %s%s", cli::col_green(y), b0, bs)
   cat(model_eqn)
-  if(!only_print){
+  if (!only_print) {
     invisible(model_eqn)
   }
 }
@@ -120,7 +131,7 @@ model_equation <- function(model, newdata = NULL, ..., only_print = FALSE) {
 #'
 #' @export
 #'
-epredict <- function(model, newdata, ...){
+epredict <- function(model, newdata, ...) {
   message(model_equation(model, newdata, only_print = TRUE))
   pr <- predict(model, newdata, ...)
   as.numeric(sapply(pr, unname))
@@ -133,7 +144,7 @@ epredict <- function(model, newdata, ...){
 #' @return the odds of the probability
 #' @export
 #'
-odds <- function(p){
+odds <- function(p) {
   p / (1 - p)
 }
 
@@ -145,10 +156,10 @@ odds <- function(p){
 #' @return the odds ratio
 #' @export
 #'
-odds_ratio <- function(pn, pd = NULL){
-  if(length(pn) > 1 & is.null(pd)){
+odds_ratio <- function(pn, pd = NULL) {
+  if (length(pn) > 1 & is.null(pd)) {
     odds(pn[1]) / odds(pn[2])
-  }else{
+  } else {
     odds(pn) / odds(pd)
   }
 }
@@ -167,30 +178,38 @@ odds_ratio <- function(pn, pd = NULL){
 #' @examples
 #' fit <- lm(Sepal.Lenght ~ Species, data = iris)
 #' wald_test(fit)
-wald_test <- function(x, h0 = 0, btt = NULL, alternative = "two.sided", alpha = 0.05){
+wald_test <- function(
+  x,
+  h0 = 0,
+  btt = NULL,
+  alternative = "two.sided",
+  alpha = 0.05
+) {
   coefs <- data.frame(summary(x)$coefficients)
   coefs$param <- rownames(coefs)
   rownames(coefs) <- NULL
 
   # check if h0 is a vector or not
-  if(length(h0) != 1 & length(h0) != nrow(coefs)){
-    stop("When h0 is a vector, need to be of length the number of coefficients in the model!")
+  if (length(h0) != 1 & length(h0) != nrow(coefs)) {
+    stop(
+      "When h0 is a vector, need to be of length the number of coefficients in the model!"
+    )
   }
 
-  if(inherits(x, c("glm", "glmerMod"))){
+  if (inherits(x, c("glm", "glmerMod"))) {
     df <- Inf
-  } else if(inherits(x, "lmerMod")){
-    if(!inherits(x, "lmerModLmerTest")){
+  } else if (inherits(x, "lmerMod")) {
+    if (!inherits(x, "lmerModLmerTest")) {
       stop("lmerMod models require lmerTest to calculate p-values!")
     }
     df <- coefs$df
-  } else{
+  } else {
     df <- df.residual(x)
   }
 
-  if(inherits(x, "lmerMod")){
+  if (inherits(x, "lmerMod")) {
     names(coefs) <- c("b", "se", "df", "stat", "pval", "param")
-  } else{
+  } else {
     coefs$df <- df
     names(coefs) <- c("b", "se", "stat", "pval", "param", "df")
   }
@@ -198,9 +217,9 @@ wald_test <- function(x, h0 = 0, btt = NULL, alternative = "two.sided", alpha = 
   stat <- (coefs$b - h0) / coefs$se
   pval <- exp(pt(-abs(stat), df = df, log.p = TRUE))
 
-  if(alternative == "two.sided"){
+  if (alternative == "two.sided") {
     pval <- pval * 2
-  } else if(alternative == "less"){
+  } else if (alternative == "less") {
     pval <- 1 - pval
   }
 
@@ -208,12 +227,11 @@ wald_test <- function(x, h0 = 0, btt = NULL, alternative = "two.sided", alpha = 
   coefs$pval <- pval
   coefs$h0 <- h0
 
-  if(!is.null(btt)){
+  if (!is.null(btt)) {
     coefs <- coefs[coefs$param %in% btt, ]
   }
 
   return(coefs)
-
 }
 
 #' conf2quant
@@ -222,21 +240,21 @@ wald_test <- function(x, h0 = 0, btt = NULL, alternative = "two.sided", alpha = 
 #'
 #' @export
 #'
-conf2quant <- function(conf.level = 0.95){
+conf2quant <- function(conf.level = 0.95) {
   alpha <- 1 - conf.level
-  c(lb = alpha/2, ub = 1 - alpha/2)
+  c(lb = alpha / 2, ub = 1 - alpha / 2)
 }
 
 #' fac2con
 #' @description
 #' Convert a factor to the contrasts representation. This works only with factors with two levels.
-#' 
+#'
 #' @param x a factor with two levels
 #'
 #' @export
 #'
-fac2con <- function(x){
-  if(nlevels(x) > 2){
+fac2con <- function(x) {
+  if (nlevels(x) > 2) {
     stop("fac2con() requires a factor with 2 levels!")
   }
   contrasts(x)[x]

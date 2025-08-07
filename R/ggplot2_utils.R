@@ -7,9 +7,8 @@
 #'
 #' @export
 #'
-remove_axes <- function(where,
-                        what){
+remove_axes <- function(where, what) {
   txt <- sprintf("axis.%s.%s = element_blank()", what, where)
   txt <- sprintf("theme(%s)", paste(txt, collapse = ","))
-  eval(parse(text=as.character(txt)))
+  eval(parse(text = as.character(txt)))
 }

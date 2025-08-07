@@ -3,7 +3,7 @@
 #' @param path he googledrive path
 #' @importFrom googledrive drive_download
 #'
-.download_sign <- function(path){
+.download_sign <- function(path) {
   #options(googledrive_quiet = TRUE)
   link <- "https://drive.google.com/file/d/17LR6SesbcayTWmmRH3oRsQjLYZZ-n-Nf/view?usp=sharing"
   path <- file.path(path, "signature.png")
@@ -19,11 +19,11 @@
 #' @importFrom rmarkdown pdf_document
 #' @export
 letter <- function(...) {
-  template <- system.file("rmarkdown/templates/letter/resources/letter-template.tex",
-                          package="filor")
-  rmarkdown::pdf_document(...,
-                          template = template
+  template <- system.file(
+    "rmarkdown/templates/letter/resources/letter-template.tex",
+    package = "filor"
   )
+  rmarkdown::pdf_document(..., template = template)
 }
 
 #' Output formats for filor
@@ -35,9 +35,9 @@ letter <- function(...) {
 #' @importFrom rmarkdown pdf_document
 #' @export
 review <- function(...) {
-  template <- system.file("rmarkdown/templates/review/resources/review-template.tex",
-                          package="filor")
-  rmarkdown::pdf_document(...,
-                          template = template
+  template <- system.file(
+    "rmarkdown/templates/review/resources/review-template.tex",
+    package = "filor"
   )
+  rmarkdown::pdf_document(..., template = template)
 }

@@ -216,3 +216,28 @@ wald_test <- function(x, h0 = 0, btt = NULL, alternative = "two.sided", alpha = 
 
 }
 
+#' conf2quant
+#'
+#' @param conf.level
+#'
+#' @export
+#'
+conf2quant <- function(conf.level = 0.95){
+  alpha <- 1 - conf.level
+  c(lb = alpha/2, ub = 1 - alpha/2)
+}
+
+#' fac2con
+#' @description
+#' Convert a factor to the contrasts representation. This works only with factors with two levels.
+#' 
+#' @param x a factor with two levels
+#'
+#' @export
+#'
+fac2con <- function(x){
+  if(nlevels(x) > 2){
+    stop("fac2con() requires a factor with 2 levels!")
+  }
+  contrasts(x)[x]
+}

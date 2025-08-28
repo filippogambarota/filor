@@ -9,6 +9,7 @@ fil <- function() {
   list(
     bib = "https://raw.githubusercontent.com/filippogambarota/bib-database/main/references.bib",
     csl = "https://raw.githubusercontent.com/citation-style-language/styles/master/apa.csl",
+    csl_inline = "https://raw.githubusercontent.com/filippogambarota/minimal/refs/heads/main/files/apa7-inline.csl",
     orcid = "0000-0002-6666-1747",
     twitter = "fgambarota",
     github = "filippogambarota"

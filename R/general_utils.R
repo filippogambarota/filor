@@ -210,3 +210,33 @@ sourceR <- function(files = NULL, path = "R") {
     source(r, echo = FALSE)
   }
 }
+
+#' trim
+#' @description
+#' Cut a numeric vector between min and max. Values lower than min or higher than max are substituted with the provided values.
+#'
+#' @param x the numeric vector
+#' @param min the minimum value. Default to `NULL`. If `NULL`, the lower bound is not modified.
+#' @param max the maximum value. Default to `NULL`. If `NULL`, the upper bound is not modified.
+#'
+#' @export
+#' @examples
+#' x <- runif(20, 0, 20)
+#' trim(x, min = 5, max = 10)
+#' trim(x, max = 10)
+#' trim(x, min = 5)
+trim <- function(x, min = NULL, max = NULL) {
+  if (!is.numeric(x)) {
+    warning("x is not numeric: returning NA")
+    rep(NA, length(x))
+  } else {
+    if (!is.null(min)) {
+      x[x < min] <- min
+    }
+
+    if (!is.null(max)) {
+      x[x > max] <- max
+    }
+    x
+  }
+}

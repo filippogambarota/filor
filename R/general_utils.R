@@ -240,3 +240,52 @@ trim <- function(x, min = NULL, max = NULL) {
     x
   }
 }
+
+#' create_R_env
+#' @description
+#' Create an ".Renviron" file if not exists and optionally opens it.
+#'
+#' @param open logical indicating if opening the file interactively
+#'
+#' @export
+#'
+create_R_env <- function(open = TRUE) {
+  if (!file.exists(".Renviron")) {
+    file.create(".Renviron")
+  }
+  if(open) utils::file.edit(".Renviron")
+}
+
+#' read_R_env
+#' @description
+#' Read an .Renviron file returning a named vector in the format key=value
+#'
+#' @returns a named vector
+#' @export
+#'
+read_R_env <- function(){
+  parts <- strsplit(readLines(".Renviron"), "=", fixed = TRUE)
+  setNames(
+    vapply(parts, `[`, "", 2),
+    vapply(parts, `[`, "", 1)
+  )
+}
+
+#' edit_R_env
+#' @description
+#' Edit an .Renviron file providing a named vector in the form key=value.
+#' Existing keys will be overwritten and new keys will be added.
+#'
+#' @param x a named vector
+#'
+#' @export
+#'
+edit_R_env <- function(x) {
+  if (!file.exists(".Renviron")) {
+    create_R_env(open = FALSE)
+  }
+  current_x <- read_R_env()
+  current_x[names(x)] <- x
+  keyval <- sprintf("%s=%s", names(current_x), current_x)
+  writeLines(keyval, con = ".Renviron")
+}

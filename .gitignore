@@ -2,9 +2,8 @@
 .Rhistory
 .RData
 .Ruserdata
-
 deprecated/
 .DS_Store
-
 /.quarto/
 docs
+.Renviron

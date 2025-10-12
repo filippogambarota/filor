@@ -15,10 +15,12 @@
 <url><loc>https://filippogambarota.github.io/filor/reference/conditional.html</loc></url>
 <url><loc>https://filippogambarota.github.io/filor/reference/conf2quant.html</loc></url>
 <url><loc>https://filippogambarota.github.io/filor/reference/coridx.html</loc></url>
+<url><loc>https://filippogambarota.github.io/filor/reference/create_R_env.html</loc></url>
 <url><loc>https://filippogambarota.github.io/filor/reference/create_yml.html</loc></url>
 <url><loc>https://filippogambarota.github.io/filor/reference/deg_to_rad.html</loc></url>
 <url><loc>https://filippogambarota.github.io/filor/reference/dot-download_sign.html</loc></url>
 <url><loc>https://filippogambarota.github.io/filor/reference/dur_to_frames.html</loc></url>
+<url><loc>https://filippogambarota.github.io/filor/reference/edit_R_env.html</loc></url>
 <url><loc>https://filippogambarota.github.io/filor/reference/epredict.html</loc></url>
 <url><loc>https://filippogambarota.github.io/filor/reference/extract_pdf_pages.html</loc></url>
 <url><loc>https://filippogambarota.github.io/filor/reference/fac2con.html</loc></url>
@@ -56,6 +58,7 @@
 <url><loc>https://filippogambarota.github.io/filor/reference/r_to_z.html</loc></url>
 <url><loc>https://filippogambarota.github.io/filor/reference/rad_to_deg.html</loc></url>
 <url><loc>https://filippogambarota.github.io/filor/reference/rdim.html</loc></url>
+<url><loc>https://filippogambarota.github.io/filor/reference/read_R_env.html</loc></url>
 <url><loc>https://filippogambarota.github.io/filor/reference/remove_axes.html</loc></url>
 <url><loc>https://filippogambarota.github.io/filor/reference/remove_revision.html</loc></url>
 <url><loc>https://filippogambarota.github.io/filor/reference/rename_figs.html</loc></url>

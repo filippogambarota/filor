@@ -289,3 +289,65 @@ edit_R_env <- function(x) {
   keyval <- sprintf("%s=%s", names(current_x), current_x)
   writeLines(keyval, con = ".Renviron")
 }
+
+#' Create and copy a minimal reproducible example (reprex)
+#'
+#' This helper function prints both the expression and its evaluated output
+#' in a tidyverse-style format, prefixing output lines with a comment marker
+#' (e.g. `#>`). The formatted text is also copied to the clipboard for easy
+#' pasting into issues, documents, or chat.
+#'
+#' @param expr An R expression or block of expressions surrounded by `{}`.
+#'   The expressions are deparsed and evaluated sequentially.
+#' @param comment A string used to prefix each output line. Defaults to `"#>"`.
+#'
+#' @details
+#' - Leading indentation is stripped for readability.
+#' - The outer `{}` of a block are removed before printing.
+#' - Vector output markers like `[1]` are removed.
+#' - The result (both code and output) is copied to the clipboard
+#'   using the **clipr** package if available.
+#'
+#' @return
+#' Invisibly returns `NULL`. The side effects are printed and copied text.
+#'
+#' @examples
+#' \dontrun{
+#' reprex({
+#'   x <- 1:5
+#'   mean(x)
+#' })
+#'
+#' reprex(mean(1:5))
+#' }
+#'
+#' @export
+reprex <- function(expr, comment = "#>"){
+
+  # Capture the raw expression
+  expr_raw <- substitute(expr)
+
+  # If it's a block (wrapped in {}), remove the outer braces
+  if (is.call(expr_raw) && identical(expr_raw[[1]], as.name("{"))) {
+    exprs <- as.list(expr_raw)[-1]
+  } else {
+    exprs <- list(expr_raw)
+  }
+
+  # Deparse each subexpression, removing leading spaces
+  texpr <- unlist(lapply(exprs, function(e) trimws(deparse(e), which = "left")))
+
+  # printing the expression
+  writeLines(texpr)
+  cat("\n")
+
+  # evaluating and capturing
+  out <- capture.output(eval(expr))
+  out <- gsub("^\\[\\d+\\]\\s*", "", out)
+  out <- paste(comment, out)
+  writeLines(out)
+
+  # to clip
+  clipr::write_clip(c(texpr, out))
+}
+

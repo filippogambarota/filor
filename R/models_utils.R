@@ -41,7 +41,6 @@ get_model_formula <- function(fit) {
   deparse(formula(fit))
 }
 
-
 # this is a wrapper of the predict function
 # add prediction to a dataframe given a model
 # extra arguments to predict are passed using ...
@@ -259,3 +258,49 @@ fac2con <- function(x) {
   }
   contrasts(x)[x]
 }
+
+#' Check lme4 Model Convergence Status
+#'
+#' `lme4_has_converged` checks whether a model fitted with `lme4::lmer` or `lme4::glmer` has converged successfully.
+#'
+#' @param x An object of class `merMod` (e.g., the result of `lmer()` or `glmer()`).
+#'
+#' @return An integer indicating the convergence status:
+#' \describe{
+#'   \item{1}{Converged successfully (no convergence issues).}
+#'   \item{0}{Model is singular (some random effects may be redundant).}
+#'   \item{-1}{Convergence issues detected, but model is not singular.}
+#' }
+#'
+#' @details
+#' This function inspects the `@optinfo$conv$lme4` slot of the model object to determine if
+#' the optimizer reported any convergence problems. It also checks for singularity using
+#' `isSingular()`. The function has been copied from Robert Long https://stackoverflow.com/a/72128391/9032257.
+#'
+#' @examples
+#' \dontrun{
+#' library(lme4)
+#' fm <- lmer(Reaction ~ Days + (Days | Subject), sleepstudy)
+#' lme4_has_converged(fm)
+#' }
+#'
+#' @export
+
+lme4_has_converged <- function(x) {
+  if (!inherits(x, "merMod")) stop("Error: must pass a lmerMod object")
+
+  retval <- NULL
+
+  if (is.null(unlist(x@optinfo$conv$lme4))) {
+    retval <- 1
+  } else {
+    if (isSingular(x)) {
+      retval <- 0
+    } else {
+      retval <- -1
+    }
+  }
+
+  return(retval)
+}
+

@@ -1,0 +1,159 @@
+# Package index
+
+## All functions
+
+- [`I2()`](https://filippogambarota.github.io/filor/reference/I2.md) :
+  I2
+- [`SE4power()`](https://filippogambarota.github.io/filor/reference/SE4power.md)
+  : Calculate Standard Error (SE) associated with a desired level of
+  statistical power
+- [`add_random_na()`](https://filippogambarota.github.io/filor/reference/add_random_na.md)
+  : add_random_na
+- [`all_same()`](https://filippogambarota.github.io/filor/reference/all_same.md)
+  : all_same
+- [`cap_link()`](https://filippogambarota.github.io/filor/reference/cap_link.md)
+  : cap_link
+- [`cfilter()`](https://filippogambarota.github.io/filor/reference/cfilter.md)
+  : Filter a List by Class
+- [`cinorm()`](https://filippogambarota.github.io/filor/reference/cinorm.md)
+  : cinorm
+- [`closest_number()`](https://filippogambarota.github.io/filor/reference/closest_number.md)
+  : closest_number
+- [`col_has_na()`](https://filippogambarota.github.io/filor/reference/col_has_na.md)
+  : col_has_na
+- [`compare_rma()`](https://filippogambarota.github.io/filor/reference/compare_rma.md)
+  : compare_rma
+- [`conditional()`](https://filippogambarota.github.io/filor/reference/conditional.md)
+  : conditional
+- [`conf2quant()`](https://filippogambarota.github.io/filor/reference/conf2quant.md)
+  : conf2quant
+- [`coridx()`](https://filippogambarota.github.io/filor/reference/coridx.md)
+  : coridx
+- [`create_R_env()`](https://filippogambarota.github.io/filor/reference/create_R_env.md)
+  : create_R_env
+- [`create_yml()`](https://filippogambarota.github.io/filor/reference/create_yml.md)
+  : Create a YAML-style list from a named vector or list
+- [`deg_to_rad()`](https://filippogambarota.github.io/filor/reference/deg_to_rad.md)
+  : deg_to_rad
+- [`.download_sign()`](https://filippogambarota.github.io/filor/reference/dot-download_sign.md)
+  : .download_sign
+- [`dur_to_frames()`](https://filippogambarota.github.io/filor/reference/dur_to_frames.md)
+  : dur_to_frames
+- [`edit_R_env()`](https://filippogambarota.github.io/filor/reference/edit_R_env.md)
+  : edit_R_env
+- [`epredict()`](https://filippogambarota.github.io/filor/reference/epredict.md)
+  : epredict
+- [`extract_pdf_pages()`](https://filippogambarota.github.io/filor/reference/extract_pdf_pages.md)
+  : extract_pdf_pages
+- [`fac2con()`](https://filippogambarota.github.io/filor/reference/fac2con.md)
+  : fac2con
+- [`fil()`](https://filippogambarota.github.io/filor/reference/fil.md) :
+  fil
+- [`filter_output()`](https://filippogambarota.github.io/filor/reference/filter_output.md)
+  : filter_output
+- [`find_pattern()`](https://filippogambarota.github.io/filor/reference/find_pattern.md)
+  : find_pattern
+- [`fpvalue()`](https://filippogambarota.github.io/filor/reference/fpvalue.md)
+  : fpvalue
+- [`frames_to_dur()`](https://filippogambarota.github.io/filor/reference/frames_to_dur.md)
+  : frames_to_dur
+- [`get_bib_entries()`](https://filippogambarota.github.io/filor/reference/get_bib_entries.md)
+  : get_bib_entries
+- [`get_caption()`](https://filippogambarota.github.io/filor/reference/get_caption.md)
+  : get_caption
+- [`get_chunk_labels()`](https://filippogambarota.github.io/filor/reference/get_chunk_labels.md)
+  : get_chunk_labels
+- [`get_funs()`](https://filippogambarota.github.io/filor/reference/get_funs.md)
+  : get_funs
+- [`get_model_formula()`](https://filippogambarota.github.io/filor/reference/get_model_formula.md)
+  : get_model_formula
+- [`get_na_rows()`](https://filippogambarota.github.io/filor/reference/get_na_rows.md)
+  : get_na_rows
+- [`get_rmd_comments()`](https://filippogambarota.github.io/filor/reference/get_rmd_comments.md)
+  : get_rmd_comments
+- [`get_stim_degree()`](https://filippogambarota.github.io/filor/reference/get_stim_degree.md)
+  : get_stim_degree
+- [`get_stim_size()`](https://filippogambarota.github.io/filor/reference/get_stim_size.md)
+  : get_stim_size
+- [`getcors()`](https://filippogambarota.github.io/filor/reference/getcors.md)
+  : getcors
+- [`ggnorm()`](https://filippogambarota.github.io/filor/reference/ggnorm.md)
+  : Plot the result of a pnorm function call
+- [`gh_down_link()`](https://filippogambarota.github.io/filor/reference/gh_down_link.md)
+  : gh_down_link
+- [`is_valid_url()`](https://filippogambarota.github.io/filor/reference/is_valid_url.md)
+  : is_valid_url
+- [`leave1out()`](https://filippogambarota.github.io/filor/reference/leave1out.md)
+  : leave1out
+- [`letter()`](https://filippogambarota.github.io/filor/reference/letter.md)
+  : Output formats for filor
+- [`lme4_has_converged()`](https://filippogambarota.github.io/filor/reference/lme4_has_converged.md)
+  : Check lme4 Model Convergence Status
+- [`model_equation()`](https://filippogambarota.github.io/filor/reference/model_equation.md)
+  : model_equation
+- [`mseq()`](https://filippogambarota.github.io/filor/reference/mseq.md)
+  : mseq
+- [`named_list()`](https://filippogambarota.github.io/filor/reference/named_list.md)
+  : named_list
+- [`ncor()`](https://filippogambarota.github.io/filor/reference/ncor.md)
+  : ncor
+- [`odds()`](https://filippogambarota.github.io/filor/reference/odds.md)
+  : odds
+- [`odds_ratio()`](https://filippogambarota.github.io/filor/reference/odds_ratio.md)
+  : odds_ratio
+- [`osf_badge()`](https://filippogambarota.github.io/filor/reference/osf_badge.md)
+  : Create a badge of OSF
+- [`pb()`](https://filippogambarota.github.io/filor/reference/pb.md) :
+  pb
+- [`print_fun()`](https://filippogambarota.github.io/filor/reference/print_fun.md)
+  : print_fun
+- [`qrmd2R()`](https://filippogambarota.github.io/filor/reference/qrmd2R.md)
+  : qrmd2R
+- [`r_to_z()`](https://filippogambarota.github.io/filor/reference/r_to_z.md)
+  : r_to_z
+- [`rad_to_deg()`](https://filippogambarota.github.io/filor/reference/rad_to_deg.md)
+  : rad_to_deg
+- [`rdim()`](https://filippogambarota.github.io/filor/reference/rdim.md)
+  : rdim
+- [`read_R_env()`](https://filippogambarota.github.io/filor/reference/read_R_env.md)
+  : read_R_env
+- [`remove_axes()`](https://filippogambarota.github.io/filor/reference/remove_axes.md)
+  : remove_axis
+- [`remove_revision()`](https://filippogambarota.github.io/filor/reference/remove_revision.md)
+  : remove_revision
+- [`rename_figs()`](https://filippogambarota.github.io/filor/reference/rename_figs.md)
+  : rename_figs
+- [`reprex()`](https://filippogambarota.github.io/filor/reference/reprex.md)
+  : Create and copy a minimal reproducible example (reprex)
+- [`review()`](https://filippogambarota.github.io/filor/reference/review.md)
+  : Output formats for filor
+- [`rmat()`](https://filippogambarota.github.io/filor/reference/rmat.md)
+  : rmat
+- [`sampdist()`](https://filippogambarota.github.io/filor/reference/sampdist.md)
+  : sampdist
+- [`scount()`](https://filippogambarota.github.io/filor/reference/scount.md)
+  : scount
+- [`show_file()`](https://filippogambarota.github.io/filor/reference/show_file.md)
+  : show_file
+- [`sim_meta()`](https://filippogambarota.github.io/filor/reference/sim_meta.md)
+  : sim_meta
+- [`sourceR()`](https://filippogambarota.github.io/filor/reference/sourceR.md)
+  : sourceR
+- [`success()`](https://filippogambarota.github.io/filor/reference/success.md)
+  : success
+- [`summary_rma()`](https://filippogambarota.github.io/filor/reference/summary_rma.md)
+  : summary_rma
+- [`tau2_from_I2()`](https://filippogambarota.github.io/filor/reference/tau2_from_I2.md)
+  : tau2_from_I2
+- [`trim()`](https://filippogambarota.github.io/filor/reference/trim.md)
+  : trim
+- [`trim_df()`](https://filippogambarota.github.io/filor/reference/trim_df.md)
+  : trim_df
+- [`try_seed()`](https://filippogambarota.github.io/filor/reference/try_seed.md)
+  : try_seed
+- [`wald_test()`](https://filippogambarota.github.io/filor/reference/wald_test.md)
+  : wald_test
+- [`write_bib_rmd()`](https://filippogambarota.github.io/filor/reference/write_bib_rmd.md)
+  : write_bib_rmd
+- [`z_to_r()`](https://filippogambarota.github.io/filor/reference/z_to_r.md)
+  : z_to_r

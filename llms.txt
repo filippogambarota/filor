@@ -153,6 +153,8 @@ devtools::install_github("filippogambarota/filor")
   : sourceR
 - [`success()`](https://filippogambarota.github.io/filor/reference/success.md)
   : success
+- [`summary_mcs()`](https://filippogambarota.github.io/filor/reference/summary_mcs.md)
+  : Summarize an object with optional extra computations
 - [`summary_rma()`](https://filippogambarota.github.io/filor/reference/summary_rma.md)
   : summary_rma
 - [`tau2_from_I2()`](https://filippogambarota.github.io/filor/reference/tau2_from_I2.md)

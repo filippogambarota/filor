@@ -16,16 +16,13 @@ add_random_na <- function(data, n, exclude_cols = NULL) {
   }
 
   pos <- list(rows = 1:nrow(data_s), cols = 1:ncol(data_s))
-
   pos <- expand.grid(pos)
-
+  
+  # Sample NA positions once
   na_pos <- sample(1:nrow(pos), n)
-
-  for (i in 1:length(na_pos)) {
-    na_pos_i <- pos[na_pos[i], ]
-
-    data_s[na_pos_i[[1]], na_pos_i[[2]]] <- NA
-  }
+  
+  # Vectorized assignment using matrix indexing
+  data_s[as.matrix(pos[na_pos, ])] <- NA
 
   data_s <- cbind(data_s, data[exclude_cols]) # combine
   data_s <- data_s[names(data)] # correct order

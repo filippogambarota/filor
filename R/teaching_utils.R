@@ -265,8 +265,8 @@ trim_df <- function(data, n = 4, digits = 3) {
     if (is.numeric(x)) round(x, digits) else x
   }), stringsAsFactors = FALSE)
   
-  dots <- data[1, , drop = FALSE]
-  dots[1, ] <- "..."
+  # Create dots row more efficiently
+  dots <- as.data.frame(lapply(data, function(x) "..."), stringsAsFactors = FALSE)[1, , drop = FALSE]
   nrows <- nrow(data)
   
   if (nrows <= 5) {

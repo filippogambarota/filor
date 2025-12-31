@@ -31,6 +31,7 @@ create_yml <- function(x, file = NULL){
     sprintf("%s: %s\n  ", names(x)[i], x[[i]])
   })
   
+  # Assumes all elements in x have the same length (original behavior)
   nn <- length(out[[1]])
   yml <- lapply(1:nn, function(i) vapply(out, function(x) x[i], character(1)))
   yml <- vapply(yml, paste, character(1), collapse = "")

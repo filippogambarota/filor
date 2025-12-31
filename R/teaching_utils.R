@@ -250,6 +250,11 @@ extract_pdf_pages <- function(file, pages, out = NULL) {
 #' @export
 #'
 trim_df <- function(data, n = 4, digits = 3) {
+  # Validate input
+  if (nrow(data) == 0) {
+    return(data)
+  }
+  
   # Convert factors to characters efficiently
   data <- as.data.frame(lapply(data, function(x) {
     if (is.factor(x)) as.character(x) else x

@@ -27,7 +27,7 @@ create_yml <- function(x, file = NULL){
   x[is.na(x)] <- ""
   
   # Vectorized creation of key-value pairs
-  yml <- sprintf("- %s: %s\n  ", names(x), x)
+  yml <- sprintf("- %s: %s", names(x), x)
   
   if(!is.null(file)){
     writeLines(yml, con = file)

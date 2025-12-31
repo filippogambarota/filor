@@ -221,8 +221,8 @@ get_funs <- function(files) {
       
       out[[i]] <- fun_lines
       
-      # Extract function name more efficiently
-      fun_names[i] <- gsub("\\s+", "", stringr::str_extract(fun_lines[1], ".+?(?=<-)"))
+      # Extract function name more efficiently with optional whitespace
+      fun_names[i] <- gsub("\\s+", "", stringr::str_extract(fun_lines[1], ".+?(?=\\s*<-)"))
     }
     
     names(out) <- fun_names

@@ -187,7 +187,8 @@ try_seed <- function(expr, maxrun = 100, digits = 4) {
 #'
 #' @export
 cfilter <- function(x, class, not = FALSE) {
-  keep <- sapply(x, function(e) any(class %in% class(e)))
+  # Use vapply for type-stable output
+  keep <- vapply(x, function(e) any(class %in% class(e)), logical(1))
   if (not) {
     keep <- !keep
   }

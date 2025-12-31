@@ -250,14 +250,20 @@ extract_pdf_pages <- function(file, pages, out = NULL) {
 #' @export
 #'
 trim_df <- function(data, n = 4, digits = 3) {
-  data <- lapply(data, function(x) if (is.factor(x)) as.character(x) else x)
-  data <- data.frame(data)
-  data <- data.frame(sapply(data, function(x) {
+  # Convert factors to characters efficiently
+  data <- as.data.frame(lapply(data, function(x) {
+    if (is.factor(x)) as.character(x) else x
+  }), stringsAsFactors = FALSE)
+  
+  # Round numeric columns efficiently
+  data <- as.data.frame(lapply(data, function(x) {
     if (is.numeric(x)) round(x, digits) else x
-  }))
-  dots <- data[1, ]
+  }), stringsAsFactors = FALSE)
+  
+  dots <- data[1, , drop = FALSE]
   dots[1, ] <- "..."
   nrows <- nrow(data)
+  
   if (nrows <= 5) {
     trimmed <- data
   } else {
@@ -265,9 +271,9 @@ trim_df <- function(data, n = 4, digits = 3) {
       n <- floor(n / 2)
     }
     trimmed <- rbind(
-      data[1:n, ],
+      data[1:n, , drop = FALSE],
       dots,
-      data[(nrows - (n - 1)):nrows, ]
+      data[(nrows - (n - 1)):nrows, , drop = FALSE]
     )
   }
   rownames(trimmed) <- NULL

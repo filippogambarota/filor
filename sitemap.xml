@@ -2,6 +2,7 @@
 <url><loc>https://filippogambarota.github.io/filor/404.html</loc></url>
 <url><loc>https://filippogambarota.github.io/filor/authors.html</loc></url>
 <url><loc>https://filippogambarota.github.io/filor/index.html</loc></url>
+<url><loc>https://filippogambarota.github.io/filor/news/index.html</loc></url>
 <url><loc>https://filippogambarota.github.io/filor/reference/I2.html</loc></url>
 <url><loc>https://filippogambarota.github.io/filor/reference/SE4power.html</loc></url>
 <url><loc>https://filippogambarota.github.io/filor/reference/add_random_na.html</loc></url>
@@ -19,6 +20,7 @@
 <url><loc>https://filippogambarota.github.io/filor/reference/create_yml.html</loc></url>
 <url><loc>https://filippogambarota.github.io/filor/reference/deg_to_rad.html</loc></url>
 <url><loc>https://filippogambarota.github.io/filor/reference/dot-download_sign.html</loc></url>
+<url><loc>https://filippogambarota.github.io/filor/reference/dot-grep_lines.html</loc></url>
 <url><loc>https://filippogambarota.github.io/filor/reference/dur_to_frames.html</loc></url>
 <url><loc>https://filippogambarota.github.io/filor/reference/edit_R_env.html</loc></url>
 <url><loc>https://filippogambarota.github.io/filor/reference/epredict.html</loc></url>
@@ -68,9 +70,11 @@
 <url><loc>https://filippogambarota.github.io/filor/reference/rmat.html</loc></url>
 <url><loc>https://filippogambarota.github.io/filor/reference/sampdist.html</loc></url>
 <url><loc>https://filippogambarota.github.io/filor/reference/scount.html</loc></url>
+<url><loc>https://filippogambarota.github.io/filor/reference/set_filter_output.html</loc></url>
 <url><loc>https://filippogambarota.github.io/filor/reference/show_file.html</loc></url>
 <url><loc>https://filippogambarota.github.io/filor/reference/sim_meta.html</loc></url>
 <url><loc>https://filippogambarota.github.io/filor/reference/sourceR.html</loc></url>
+<url><loc>https://filippogambarota.github.io/filor/reference/style_output.html</loc></url>
 <url><loc>https://filippogambarota.github.io/filor/reference/success.html</loc></url>
 <url><loc>https://filippogambarota.github.io/filor/reference/summary_mcs.html</loc></url>
 <url><loc>https://filippogambarota.github.io/filor/reference/summary_rma.html</loc></url>

@@ -37,6 +37,8 @@
   : deg_to_rad
 - [`.download_sign()`](https://filippogambarota.github.io/filor/reference/dot-download_sign.md)
   : .download_sign
+- [`.grep_lines()`](https://filippogambarota.github.io/filor/reference/dot-grep_lines.md)
+  : Select Line Indices Based on Numeric Positions or Regex Delimiters
 - [`dur_to_frames()`](https://filippogambarota.github.io/filor/reference/dur_to_frames.md)
   : dur_to_frames
 - [`edit_R_env()`](https://filippogambarota.github.io/filor/reference/edit_R_env.md)
@@ -133,12 +135,16 @@
   : sampdist
 - [`scount()`](https://filippogambarota.github.io/filor/reference/scount.md)
   : scount
+- [`set_filter_output()`](https://filippogambarota.github.io/filor/reference/set_filter_output.md)
+  : Filter knitr output by line indices
 - [`show_file()`](https://filippogambarota.github.io/filor/reference/show_file.md)
   : show_file
 - [`sim_meta()`](https://filippogambarota.github.io/filor/reference/sim_meta.md)
   : sim_meta
 - [`sourceR()`](https://filippogambarota.github.io/filor/reference/sourceR.md)
   : sourceR
+- [`style_output()`](https://filippogambarota.github.io/filor/reference/style_output.md)
+  : Highlight Selected Lines of Printed Output as HTML
 - [`success()`](https://filippogambarota.github.io/filor/reference/success.md)
   : success
 - [`summary_mcs()`](https://filippogambarota.github.io/filor/reference/summary_mcs.md)

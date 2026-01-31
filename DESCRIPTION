@@ -1,7 +1,7 @@
 Package: filor
 Type: Package
 Title: Personal collection of useful functions
-Version: 0.1.0
+Version: 1.0.0
 Author: Filippo Gambarota
 Maintainer: Filippo Gambarota <filippo.gambarota@unipd.it>
 Description: Personal collection of useful functions

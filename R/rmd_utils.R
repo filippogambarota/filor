@@ -299,25 +299,15 @@ rename_figs <- function(prefix = "figure") {
 #' @examples
 #' fit <- lm(mpg ~ hp, data = mtcars)
 #' filter_output(summary(fit), 1:5)
+
 filter_output <- function(x, lines = NULL, cat = TRUE) {
   res <- capture.output(x)
-  if (is.null(lines)) {
-    lines <- 1:length(res)
-  }
-
-  if (!is.numeric(lines)) {
-    if (length(lines) != 1) {
-      stop(
-        "When lines is not a numeric vector, need to be a character vector of length 1 with regex 'start|end'!"
-      )
-    }
-
-    rr <- unlist(strsplit(lines, split = "\\|"))
-    lines <- grep(rr[1], res):grep(rr[2], res)
-  }
+  lines <- .grep_lines(res, lines)
 
   if (cat) {
     cat(res[lines], sep = "\n")
+  } else{
+    res[lines]
   }
 }
 
@@ -335,4 +325,54 @@ qrmd2R <- function(x) {
     documentation = 2,
     quiet = TRUE
   )
+}
+
+#' Highlight Selected Lines of Printed Output as HTML
+#'
+#' Captures the printed output of an R object, escapes it for HTML, and
+#' highlights selected lines using either an inline background color
+#' or a CSS class. The result is wrapped in `<pre><code>` tags and printed
+#' to the output.
+#'
+#' @param x An R object whose printed representation will be captured.
+#' @param lines Integer vector indicating which lines of the output
+#'   should be highlighted. Passed to \code{.grep_lines()} for selection.
+#' @param hg Character string specifying the background color to use
+#'   for highlighting when \code{class} is \code{NULL}. Defaults to
+#'   \code{"yellow"}.
+#' @param class Optional character string giving a CSS class name to
+#'   apply to highlighted lines. If provided, \code{hg} is ignored.
+#'
+#' @details
+#' The function uses \code{\link[utils]{capture.output}} to obtain the
+#' printed representation of \code{x} and
+#' \code{\link[htmltools]{htmlEscape}} to ensure HTML safety.
+#' Line selection is delegated to the internal helper \code{.grep_lines()}.
+#'
+#' @return
+#' This function is called for its side effect. It prints HTML code to
+#' the output and returns \code{invisible(NULL)}.
+#'
+#' @examples
+#' x <- summary(lm(mpg ~ wt, data = mtcars))
+#' style_output(x, lines = 2:3)
+#'
+#' # Using a CSS class instead of inline color
+#' style_output(x, lines = 1, class = "highlight")
+#'
+#' @export
+style_output <- function(x, lines, hg = "yellow", class = NULL){
+  x <- utils::capture.output(x)
+  x <- htmltools::htmlEscape(x)
+  lines <- .grep_lines(x, lines)
+
+  if(is.null(class)){
+    x[lines] <- sprintf("<span style='background-color: %s;'>%s</span>", hg, x[lines])
+  } else{
+    x[lines] <- sprintf("<span class='%s'>%s</span>", class, x[lines])
+  }
+
+  cat("<pre><code>")
+  cat(x, sep = "\n")
+  cat("</code></pre>")
 }

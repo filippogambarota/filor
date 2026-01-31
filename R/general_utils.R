@@ -351,3 +351,56 @@ reprex <- function(expr, comment = "#>"){
   clipr::write_clip(c(texpr, out))
 }
 
+#' Select Line Indices Based on Numeric Positions or Regex Delimiters
+#'
+#' Computes a vector of line indices either directly from numeric input
+#' or by identifying a contiguous block of lines delimited by regular
+#' expression matches.
+#'
+#' If \code{lines} is numeric, it is returned as-is. If \code{lines} is a
+#' character string, it must be a single regex of the form
+#' \code{"start|end"}, where \code{start} and \code{end} are regular
+#' expressions matched against \code{x}. The returned indices span from
+#' the first match of \code{start} to the first match of \code{end}
+#' (inclusive). If only one regex is provided, it is used for both start
+#' and end.
+#'
+#' @param x A character vector, typically representing lines of text.
+#' @param lines Either:
+#' \itemize{
+#'   \item A numeric vector of line indices, or
+#'   \item A character vector of length 1 specifying regex delimiters
+#'         in the form \code{"start|end"}.
+#' }
+#'
+#' @return A numeric vector of line indices.
+#'
+#' @details
+#' When \code{lines} is \code{NULL}, the function currently returns
+#' \code{1:length(lines)}, which evaluates to an empty integer vector.
+#'
+#' @examples
+#' txt <- c("alpha", "start", "beta", "gamma", "end", "delta")
+#'
+#' .grep_lines(txt, c(2, 3, 4))
+#' .grep_lines(txt, "start|end")
+#' .grep_lines(txt, "beta")
+#'
+#' @export
+.grep_lines <- function(x, lines = NULL){
+  if(is.null(lines)) lines <- seq_along(x)
+  if (!is.numeric(lines)) {
+    if (length(lines) != 1) {
+      stop(
+        "When lines is not a numeric vector, need to be a character vector of length 1 with regex 'start|end'!"
+      )
+    }
+
+    rr <- unlist(strsplit(lines, split = "\\|"))
+    if(length(rr) == 1){
+      rr <- c(rr, rr)
+    }
+    lines <- grep(rr[1], x):grep(rr[2], x)
+  }
+  return(lines)
+}

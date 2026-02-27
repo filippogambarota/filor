@@ -161,6 +161,8 @@
   : try_seed
 - [`wald_test()`](https://filippogambarota.github.io/filor/reference/wald_test.md)
   : wald_test
+- [`wcor()`](https://filippogambarota.github.io/filor/reference/wcor.md)
+  : Pairwise name combinations (as concatenated strings)
 - [`write_bib_rmd()`](https://filippogambarota.github.io/filor/reference/write_bib_rmd.md)
   : write_bib_rmd
 - [`z_to_r()`](https://filippogambarota.github.io/filor/reference/z_to_r.md)

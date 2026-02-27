@@ -5,7 +5,7 @@ create a correlation matrix given the vector x of unique correlations
 ## Usage
 
 ``` r
-rmat(x)
+rmat(x, names = NULL)
 ```
 
 ## Arguments

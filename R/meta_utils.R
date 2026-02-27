@@ -169,10 +169,56 @@ z_to_r <- function(z) {
 #' @return the correlation matrix
 #' @export
 #'
-rmat <- function(x) {
+rmat <- function(x, names = NULL) {
   p <- rdim(length(x))
   R <- diag(p)
   R[lower.tri(R)] <- x
   R[upper.tri(R)] <- t(R)[upper.tri(R)]
+  if (!is.null(names)) {
+    stopifnot(
+      ncol(R) == length(names),
+      nrow(R) == length(names)
+    )
+    colnames(R) <- rownames(R) <- names
+  }
   R
+}
+
+#' Pairwise name combinations (as concatenated strings)
+#'
+#' Generate all 2-combinations of a set of names and return each pair as a
+#' single concatenated string (e.g., `"ab"`, `"ac"`, ...).
+#'
+#' If `names` is not provided, the first `n` lowercase letters (`letters[1:n]`)
+#' are used as default names.
+#'
+#' @param n Integer. Number of elements (and number of names to generate if
+#'   `names` is `NULL`).
+#' @param names Character vector of length `n`. If `NULL`, defaults to
+#'   `letters[1:n]`.
+#'
+#' @return A character vector of length `choose(n, 2)` containing concatenated
+#'   name pairs.
+#'
+#' @details
+#' Uses [gtools::combinations()] to generate all unordered pairs of `names`,
+#' then concatenates each pair with no separator.
+#'
+#' @examples
+#' wcor(4)
+#' wcor(3, c("x", "y", "z"))
+#'
+#' @seealso [gtools::combinations()]
+#' @export
+
+wcor <- function(n, names = NULL) {
+  if (is.null(names)) {
+    names <- letters[1:n]
+  } else {
+    stopifnot(
+      length(names) == n
+    )
+  }
+  cc <- gtools::combinations(length(names), 2, names)
+  apply(cc, 1, function(x) paste(x, collapse = ""))
 }

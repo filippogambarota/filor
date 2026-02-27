@@ -4,7 +4,7 @@
 \alias{rmat}
 \title{rmat}
 \usage{
-rmat(x)
+rmat(x, names = NULL)
 }
 \arguments{
 \item{x}{}

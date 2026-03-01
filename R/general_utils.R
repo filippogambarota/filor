@@ -404,3 +404,69 @@ reprex <- function(expr, comment = "#>"){
   }
   return(lines)
 }
+
+#' Conditionally apply a function to elements of a list or columns of a data frame
+#'
+#' Applies `FUN` to each element of `x` for which `condition` returns `TRUE`;
+#' otherwise leaves the element unchanged.
+#'
+#' If `x` is a data frame, the result is returned as a data frame. If `x` is a
+#' list (and not a data frame), the result is returned as a list. Names are
+#' preserved.
+#'
+#' @param x A list or a data frame.
+#' @param condition A predicate function applied to each element/column. Must
+#'   return a single `TRUE` to trigger the transformation; any other value (e.g.,
+#'   `FALSE`, `NA`, non-scalar) leaves the element unchanged.
+#' @param FUN A function to apply to elements/columns that satisfy `condition`.
+#' @param ... Additional arguments passed to `FUN`.
+#'
+#' @return A data frame if `x` is a data frame; otherwise a list.
+#'
+#' @examples
+#' # Round numeric columns in a data frame
+#' capply(iris, is.numeric, round, 2)
+#'
+#' # Apply to a list: uppercase only character elements
+#' x <- list(a = 1:3, b = "hello", c = TRUE)
+#' capply(x, is.character, toupper)
+#'
+#' @export
+#'
+capply <- function(x, condition, FUN, ...) {
+  out <- lapply(x, function(xi) {
+    ok <- condition(xi)
+    if (isTRUE(ok)) FUN(xi, ...) else xi
+  })
+
+  if (is.data.frame(x)) {
+    out <- as.data.frame(out,
+                         optional = TRUE,
+                         stringsAsFactors = FALSE)
+  }
+  names(out) <- names(x)
+  out
+}
+
+#' Round numeric columns in a data frame
+#'
+#' Rounds numeric columns of `x` using [base::round()] while leaving other
+#' columns unchanged. Intended as an explicit alternative to registering an S3
+#' method for `round.data.frame`.
+#'
+#' @param x A data frame (or list-like object accepted by `capply()`).
+#' @param digits Integer indicating the number of decimal places to round to.
+#'   Defaults to `getOption("digits")`.
+#' @param ... Further arguments passed to [base::round()].
+#'
+#' @return An object of the same type as returned by `capply()` (typically a data
+#'   frame when `x` is a data frame).
+#'
+#' @examples
+#' dround(iris, 2)
+#'
+#' @export
+
+dround <- function(x, digits = getOption("digits"), ...) {
+  capply(x, is.numeric, round, digits = digits, ...)
+}

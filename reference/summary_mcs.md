@@ -53,6 +53,6 @@ summary_mcs(
     sd = sd
   )
 )
-#>     Min.  1st Qu.   Median     Mean  3rd Qu.     Max. 
-#> -0.77211 -0.36400  0.03223  0.06850  0.35144  1.62495 
+#>    Min. 1st Qu.  Median    Mean 3rd Qu.    Max. 
+#> -0.7721 -0.2412  0.2121  0.2901  0.5913  1.6250 
 ```

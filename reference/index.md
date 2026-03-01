@@ -13,6 +13,9 @@
   : all_same
 - [`cap_link()`](https://filippogambarota.github.io/filor/reference/cap_link.md)
   : cap_link
+- [`capply()`](https://filippogambarota.github.io/filor/reference/capply.md)
+  : Conditionally apply a function to elements of a list or columns of a
+  data frame
 - [`cfilter()`](https://filippogambarota.github.io/filor/reference/cfilter.md)
   : Filter a List by Class
 - [`cinorm()`](https://filippogambarota.github.io/filor/reference/cinorm.md)
@@ -39,6 +42,8 @@
   : .download_sign
 - [`.grep_lines()`](https://filippogambarota.github.io/filor/reference/dot-grep_lines.md)
   : Select Line Indices Based on Numeric Positions or Regex Delimiters
+- [`dround()`](https://filippogambarota.github.io/filor/reference/dround.md)
+  : Round numeric columns in a data frame
 - [`dur_to_frames()`](https://filippogambarota.github.io/filor/reference/dur_to_frames.md)
   : dur_to_frames
 - [`edit_R_env()`](https://filippogambarota.github.io/filor/reference/edit_R_env.md)

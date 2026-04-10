@@ -470,3 +470,62 @@ capply <- function(x, condition, FUN, ...) {
 dround <- function(x, digits = getOption("digits"), ...) {
   capply(x, is.numeric, round, digits = digits, ...)
 }
+
+
+#' Campionamento Casuale Semplice o Stratificato
+#'
+#' @description
+#' Questa funzione permette di estrarre un campione casuale di righe da un data frame.
+#' È possibile eseguire un campionamento globale oppure un campionamento stratificato
+#' raggruppando i dati per una o più colonne specificate.
+#'
+#' @param data Un \code{data.frame} da cui estrarre il campione.
+#' @param n Un intero positivo che indica il numero di righe da estrarre per ogni gruppo.
+#'   Se il gruppo ha meno di \code{n} righe, viene restituito l'intero gruppo. Predefinito a 1.
+#' @param by Un vettore di caratteri (es. \code{"colonna_A"} o \code{c("col1", "col2")})
+#'   che specifica le colonne di raggruppamento. Se \code{NULL} (predefinito),
+#'   il campionamento avviene sull'intero dataset.
+#'
+#' @return Un \code{data.frame} contenente le righe campionate, con i nomi delle righe (\code{rownames}) resettati.
+#'
+#' @details
+#' La funzione utilizza internamente \code{\link{split}} e \code{\link{lapply}} per gestire
+#' i sottogruppi. Se un gruppo risultante è vuoto, non contribuirà al risultato finale.
+#'
+#' @examples
+#' # Campionamento di 2 righe dal dataset iris (globale)
+#' sample_by_group(iris, n = 2)
+#'
+#' # Campionamento di 1 riga per ogni Specie in iris
+#' sample_by_group(iris, n = 1, by = "Species")
+#'
+#' # Campionamento stratificato su più colonne (se applicabile)
+#' # sample_by_group(mtcars, n = 2, by = c("cyl", "am"))
+#'
+#' @export
+sample_by_group <- function(data, n = 1, by = NULL) {
+  if (is.null(by)) {
+    # Uso seq_len per evitare problemi se data ha 0 righe
+    idx <- sample(seq_len(nrow(data)), size = min(n, nrow(data)))
+    out <- data[idx, , drop = FALSE]
+  } else {
+    # Divido il dataframe per i gruppi specificati
+    byl <- data[by]
+    datal <- split(data, byl)
+
+    out_list <- lapply(datal, function(x) {
+      nr <- nrow(x)
+      if (nr == 0) return(NULL)
+
+      # Campionamento sicuro: non chiede più di quanto disponibile
+      size_to_draw <- min(n, nr)
+      idx <- sample(seq_len(nr), size = size_to_draw)
+      x[idx, , drop = FALSE]
+    })
+
+    out <- do.call(rbind, out_list)
+  }
+
+  rownames(out) <- NULL
+  return(out)
+}

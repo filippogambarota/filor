@@ -138,6 +138,8 @@
   : rmat
 - [`sampdist()`](https://filippogambarota.github.io/filor/reference/sampdist.md)
   : sampdist
+- [`sample_by_group()`](https://filippogambarota.github.io/filor/reference/sample_by_group.md)
+  : Campionamento Casuale Semplice o Stratificato
 - [`scount()`](https://filippogambarota.github.io/filor/reference/scount.md)
   : scount
 - [`set_filter_output()`](https://filippogambarota.github.io/filor/reference/set_filter_output.md)

@@ -190,30 +190,45 @@ get_chunk_labels <- function(file, output = NULL, as_captions = FALSE) {
 #'
 get_funs <- function(files) {
   funs <- lapply(files, function(file) {
-    file <- suppressWarnings(readLines(file))
-    cutpoints <- grep("^\\S*\\s*<-\\s*function", file)
-    cutpoints[length(cutpoints) + 1] <- length(file)
-    out <- vector(mode = "list", length = length(cutpoints) - 1)
-    fun_names <- vector(mode = "character", length = length(cutpoints) - 1)
-    if (length(file) != 0) {
-      for (i in 1:(length(cutpoints) - 1)) {
-        if (i == length(cutpoints) - 1) {
-          out[[i]] <- file[cutpoints[i]:(cutpoints[i + 1])]
-        } else {
-          out[[i]] <- file[cutpoints[i]:(cutpoints[i + 1] - 1)]
-        }
-
-        out[[i]] <- out[[i]][!grepl("#'", out[[i]])]
-        endfun <- rev(grep("\\}", out[[i]]))[1]
-        out[[i]] <- out[[i]][1:endfun]
-
-        fun_names[i] <- stringr::str_extract(out[[i]][1], ".+?(?=<-)")
+    file_lines <- suppressWarnings(readLines(file))
+    if (length(file_lines) == 0) return(NULL)
+    
+    cutpoints <- grep("^\\S*\\s*<-\\s*function", file_lines)
+    if (length(cutpoints) == 0) return(NULL)
+    
+    cutpoints <- c(cutpoints, length(file_lines) + 1)
+    n_funs <- length(cutpoints) - 1
+    
+    # Pre-allocate lists
+    out <- vector("list", n_funs)
+    fun_names <- character(n_funs)
+    
+    # Extract functions more efficiently
+    for (i in seq_len(n_funs)) {
+      start <- cutpoints[i]
+      end <- if (i == n_funs) cutpoints[i + 1] else cutpoints[i + 1] - 1
+      
+      # Extract function lines and remove roxygen comments
+      fun_lines <- file_lines[start:end]
+      fun_lines <- fun_lines[!grepl("#'", fun_lines)]
+      
+      # Find last closing brace
+      closing_braces <- grep("\\}", fun_lines)
+      if (length(closing_braces) > 0) {
+        endfun <- closing_braces[length(closing_braces)]
+        fun_lines <- fun_lines[1:endfun]
       }
-      fun_names <- gsub(" ", "", fun_names)
-      names(out) <- fun_names
-      return(out)
+      
+      out[[i]] <- fun_lines
+      
+      # Extract function name efficiently
+      fun_names[i] <- gsub("\\s+", "", stringr::str_extract(fun_lines[1], ".+?(?=<-)"))
     }
+    
+    names(out) <- fun_names
+    out
   })
+  
   unlist(funs, recursive = FALSE)
 }
 

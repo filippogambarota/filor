@@ -23,16 +23,20 @@
 #'
 #' @export
 create_yml <- function(x, file = NULL){
-  key_val_temp <- "%s: %s\n  "
-  out <- vector(mode = "list", length = length(x))
-  for(i in 1:length(x)){
-    x[[i]] <- ifelse(is.na(x[[i]]), "", x[[i]])
-    out[[i]] <- sprintf(key_val_temp, names(x)[i], x[[i]])
-  }
+  # Replace NA with empty string efficiently using vectorization
+  x <- lapply(x, function(val) ifelse(is.na(val), "", val))
+  
+  # Create key-value pairs efficiently
+  out <- lapply(seq_along(x), function(i) {
+    sprintf("%s: %s\n  ", names(x)[i], x[[i]])
+  })
+  
+  # Assumes all elements in x have the same length (original behavior)
   nn <- length(out[[1]])
-  yml <- lapply(1:nn, function(i) sapply(out, function(x) x[i]))
-  yml <- lapply(yml, paste, collapse = "")
-  yml <- sapply(yml, function(x) paste("-", x))
+  yml <- lapply(1:nn, function(i) vapply(out, function(x) x[i], character(1)))
+  yml <- vapply(yml, paste, character(1), collapse = "")
+  yml <- paste("-", yml)
+  
   if(!is.null(file)){
     writeLines(yml, con = file)
     invisible(yml)

@@ -154,6 +154,8 @@ devtools::install_github("filippogambarota/filor")
   : Campionamento Casuale Semplice o Stratificato
 - [`scount()`](https://filippogambarota.github.io/filor/reference/scount.md)
   : scount
+- [`se_p()`](https://filippogambarota.github.io/filor/reference/se_p.md)
+  : Calculate Standard Error and Confidence Interval for a Proportion
 - [`set_filter_output()`](https://filippogambarota.github.io/filor/reference/set_filter_output.md)
   : Filter knitr output by line indices
 - [`show_file()`](https://filippogambarota.github.io/filor/reference/show_file.md)

@@ -529,3 +529,65 @@ sample_by_group <- function(data, n = 1, by = NULL) {
   rownames(out) <- NULL
   return(out)
 }
+
+#' Generate a sequence over the range of a numeric vector
+#'
+#' Creates a sequence from the minimum to the maximum of `x`, using either
+#' a step size (`by`) or a desired number of points (`length.out`).
+#'
+#' @param x A numeric vector.
+#' @param by A numeric increment for the sequence. Mutually exclusive with
+#'   `length.out`.
+#' @param length.out Desired length of the output sequence. Mutually exclusive
+#'   with `by`.
+#' @param na.rm Logical. Should missing values be removed before computing
+#'   the range? Default is `FALSE`.
+#'
+#' @return A numeric vector containing a sequence from `min(x)` to `max(x)`.
+#'
+#' @details
+#' Exactly one between `by` and `length.out` must be supplied.
+#'
+#' If `na.rm = FALSE` and `x` contains missing values, the function may fail
+#' because `min(x)` and `max(x)` return `NA`.
+#'
+#' @examples
+#' x <- c(3.2, 7.8, 5.1, 9.4)
+#'
+#' seq_range(x, by = 1)
+#' seq_range(x, length.out = 5)
+#'
+#' x2 <- c(1, 4, NA, 10)
+#' seq_range(x2, length.out = 4, na.rm = TRUE)
+#'
+#' @export
+seq_range <- function(x, by = NULL, length.out = NULL, na.rm = FALSE) {
+  if (is.null(by) && is.null(length.out)) {
+    stop("Either 'by' or 'length.out' must be provided.")
+  }
+
+  if (!is.null(by) && !is.null(length.out)) {
+    stop("Only one of 'by' or 'length.out' can be provided.")
+  }
+
+  if (!is.numeric(x)) {
+    stop("'x' must be a numeric vector.")
+  }
+
+  if (length(x) == 0) {
+    stop("'x' must not be empty.")
+  }
+
+  min_x <- min(x, na.rm = na.rm)
+  max_x <- max(x, na.rm = na.rm)
+
+  if (!is.finite(min_x) || !is.finite(max_x)) {
+    stop("Could not compute a finite range from 'x'.")
+  }
+
+  if (!is.null(by)) {
+    seq(min_x, max_x, by = by)
+  } else {
+    seq(min_x, max_x, length.out = length.out)
+  }
+}

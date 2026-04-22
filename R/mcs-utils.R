@@ -53,3 +53,46 @@ summary_mcs <- function(x,
   }
   return(out)
 }
+
+#' Calculate Standard Error and Confidence Interval for a Proportion
+#'
+#' This function computes the standard error and the asymptotic (Wald)
+#' confidence interval for a given proportion based on a specified
+#' number of simulations or observations.
+#'
+#' @param p A numeric value representing the proportion (between 0 and 1).
+#' @param nsim An integer representing the number of simulations or the sample size.
+#' @param conf.level A numeric value between 0 and 1 specifying the confidence
+#'   level for the interval. Defaults to 0.95.
+#'
+#' @return A list containing:
+#' \itemize{
+#'   \item \code{se}: The calculated standard error of the proportion.
+#'   \item \code{ci}: A named numeric vector with the lower bound (\code{ci.lb})
+#'     and upper bound (\code{ci.ub}) of the confidence interval.
+#' }
+#'
+#' @details
+#' The standard error is calculated as:
+#' \deqn{SE = \sqrt{\frac{p(1-p)}{n}}}
+#' The confidence interval is calculated using the standard normal distribution
+#' (Z-score) approximation.
+#'
+#' @examples
+#' se_p(p = 0.5, nsim = 1000)
+#' se_p(p = 0.2, nsim = 500, conf.level = 0.99)
+#'
+#' @export
+se_p <- function(p, nsim, conf.level = 0.95){
+  stopifnot("p must be a number between 0 and 1" = 0 <= p & p <= 1,
+            "conf.level must be a number between 0 and 1" = 0 <= conf.level & conf.level <= 1,
+            "nsim must be equal or higher than 1" = nsim >= 1)
+  q  <- abs(qnorm((1 - conf.level)/2))
+  se <- sqrt((p * (1 - p)) / nsim)
+  ci <- p + c(-1, 1) * q * se
+  names(ci) <- c("ci.lb", "ci.ub")
+  list(
+    se = se,
+    ci = ci
+  )
+}

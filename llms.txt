@@ -156,6 +156,8 @@ devtools::install_github("filippogambarota/filor")
   : scount
 - [`se_p()`](https://filippogambarota.github.io/filor/reference/se_p.md)
   : Calculate Standard Error and Confidence Interval for a Proportion
+- [`seq_range()`](https://filippogambarota.github.io/filor/reference/seq_range.md)
+  : Generate a sequence over the range of a numeric vector
 - [`set_filter_output()`](https://filippogambarota.github.io/filor/reference/set_filter_output.md)
   : Filter knitr output by line indices
 - [`show_file()`](https://filippogambarota.github.io/filor/reference/show_file.md)

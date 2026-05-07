@@ -13,17 +13,19 @@ find_pattern <- function(pattern, which_files = c("R", "Rmd"), dir = ".") {
 
   # Getting files
   files <- list.files(dir, which_files, full.names = TRUE, recursive = TRUE)
-  files_content <- lapply(files, function(x) readLines(x, warn = FALSE))
-  names(files_content) <- files
-
-  # Counting times
-  pattern_times <- sapply(files_content, function(x) sum(grepl(pattern, x)))
-  files_content <- files_content[pattern_times > 0]
+  
+  # Count pattern occurrences more efficiently without storing all file contents
+  pattern_times <- vapply(files, function(file) {
+    lines <- readLines(file, warn = FALSE)
+    sum(grepl(pattern, lines))
+  }, integer(1))
+  
+  names(pattern_times) <- files
   pattern_times <- pattern_times[pattern_times > 0]
 
   # Formatting
   if (length(pattern_times) > 0) {
-    out <- paste(names(files_content), "---", pattern_times, "times")
+    out <- paste(names(pattern_times), "---", pattern_times, "times")
     out_cli <- ifelse(grepl("R/", out), cli::col_blue(out), out) # Different for R/ files
     msg <- lapply(out_cli, cli::cli_alert_success)
   } else {
@@ -48,7 +50,7 @@ success <- function(msg) {
 #'
 pb <- function(niter, index) {
   step <- niter / 10
-  if (i %% step == 0) {
+  if (index %% step == 0) {
     pr <- paste0(rep("----", index / step), collapse = "")
     cat("\r", paste0(index / step * 10, "% "), pr, sep = "")
     utils::flush.console()
@@ -185,7 +187,8 @@ try_seed <- function(expr, maxrun = 100, digits = 4) {
 #'
 #' @export
 cfilter <- function(x, class, not = FALSE) {
-  keep <- sapply(x, function(e) any(class %in% class(e)))
+  # Use vapply for type-stable output
+  keep <- vapply(x, function(e) any(class %in% class(e)), logical(1))
   if (not) {
     keep <- !keep
   }
@@ -206,9 +209,8 @@ sourceR <- function(files = NULL, path = "R") {
   if (!is.null(files)) {
     rfiles <- rfiles[grepl(paste0(files, collapse = "|"), rfiles)]
   }
-  for (r in rfiles) {
-    source(r, echo = FALSE)
-  }
+  # Use invisible to suppress output and lapply for cleaner iteration
+  invisible(lapply(rfiles, source, echo = FALSE))
 }
 
 #' trim

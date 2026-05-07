@@ -16,16 +16,13 @@ add_random_na <- function(data, n, exclude_cols = NULL) {
   }
 
   pos <- list(rows = 1:nrow(data_s), cols = 1:ncol(data_s))
-
   pos <- expand.grid(pos)
-
+  
+  # Sample NA positions once
   na_pos <- sample(1:nrow(pos), n)
-
-  for (i in 1:length(na_pos)) {
-    na_pos_i <- pos[na_pos[i], ]
-
-    data_s[na_pos_i[[1]], na_pos_i[[2]]] <- NA
-  }
+  
+  # Vectorized assignment using matrix indexing
+  data_s[as.matrix(pos[na_pos, ])] <- NA
 
   data_s <- cbind(data_s, data[exclude_cols]) # combine
   data_s <- data_s[names(data)] # correct order
@@ -253,14 +250,25 @@ extract_pdf_pages <- function(file, pages, out = NULL) {
 #' @export
 #'
 trim_df <- function(data, n = 4, digits = 3) {
-  data <- lapply(data, function(x) if (is.factor(x)) as.character(x) else x)
-  data <- data.frame(data)
-  data <- data.frame(sapply(data, function(x) {
+  # Validate input
+  if (nrow(data) == 0) {
+    return(data)
+  }
+  
+  # Convert factors to characters efficiently
+  data <- as.data.frame(lapply(data, function(x) {
+    if (is.factor(x)) as.character(x) else x
+  }), stringsAsFactors = FALSE)
+  
+  # Round numeric columns efficiently
+  data <- as.data.frame(lapply(data, function(x) {
     if (is.numeric(x)) round(x, digits) else x
-  }))
-  dots <- data[1, ]
-  dots[1, ] <- "..."
+  }), stringsAsFactors = FALSE)
+  
+  # Create dots row more efficiently
+  dots <- as.data.frame(lapply(data, function(x) "..."), stringsAsFactors = FALSE)[1, , drop = FALSE]
   nrows <- nrow(data)
+  
   if (nrows <= 5) {
     trimmed <- data
   } else {
@@ -268,9 +276,9 @@ trim_df <- function(data, n = 4, digits = 3) {
       n <- floor(n / 2)
     }
     trimmed <- rbind(
-      data[1:n, ],
+      data[1:n, , drop = FALSE],
       dots,
-      data[(nrows - (n - 1)):nrows, ]
+      data[(nrows - (n - 1)):nrows, , drop = FALSE]
     )
   }
   rownames(trimmed) <- NULL

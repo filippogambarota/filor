@@ -7,8 +7,8 @@
 #' @export
 #'
 col_has_na <- function(data){
-  # return TRUE if a column is all without NA
-  has_na <- sapply(data, function(col) any(is.na(col)))
+  # Use vapply for type-stable output and better performance
+  has_na <- vapply(data, function(col) any(is.na(col)), logical(1))
   colnames(data)[has_na] # select only NA columns
 }
 
@@ -160,7 +160,7 @@ rdim <- function(k){
 #' @return the number of correlations
 #' @export
 #'
-getcors <- function(x){s
+getcors <- function(x){
   if(!is.matrix(x)){
     stop("x need to be a matrix!")
   }

@@ -12,6 +12,8 @@ rmat(x, names = NULL)
 
 - x:
 
+  vector of correlations
+
 ## Value
 
 the correlation matrix

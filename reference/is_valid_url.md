@@ -13,6 +13,8 @@ is_valid_url(string)
 
 - string:
 
+  url
+
 ## Value
 
 logical

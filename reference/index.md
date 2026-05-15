@@ -124,6 +124,8 @@
   : rdim
 - [`read_R_env()`](https://filippogambarota.github.io/filor/reference/read_R_env.md)
   : read_R_env
+- [`rel_chance()`](https://filippogambarota.github.io/filor/reference/rel_chance.md)
+  : Express a Probability Relative to Chance
 - [`remove_axes()`](https://filippogambarota.github.io/filor/reference/remove_axes.md)
   : remove_axis
 - [`remove_revision()`](https://filippogambarota.github.io/filor/reference/remove_revision.md)
@@ -132,6 +134,8 @@
   : rename_figs
 - [`reprex()`](https://filippogambarota.github.io/filor/reference/reprex.md)
   : Create and copy a minimal reproducible example (reprex)
+- [`rescale_chance()`](https://filippogambarota.github.io/filor/reference/rescale_chance.md)
+  : Rescale a Probability to a Different Chance Level
 - [`review()`](https://filippogambarota.github.io/filor/reference/review.md)
   : Output formats for filor
 - [`rmat()`](https://filippogambarota.github.io/filor/reference/rmat.md)

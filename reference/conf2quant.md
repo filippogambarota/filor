@@ -11,3 +11,5 @@ conf2quant(conf.level = 0.95)
 ## Arguments
 
 - conf.level:
+
+  confidence level

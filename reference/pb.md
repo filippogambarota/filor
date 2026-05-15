@@ -5,15 +5,19 @@ Display a progress bar to use within a `for` loop
 ## Usage
 
 ``` r
-pb(niter, index)
+pb(index, niter, width = 40)
 ```
 
 ## Arguments
+
+- index:
+
+  Integer that indicate the current iteration
 
 - niter:
 
   Integer that indicate the total number of iterations
 
-- index:
+- width:
 
-  Integer that indicate the current iteration
+  Maximum width of the console output

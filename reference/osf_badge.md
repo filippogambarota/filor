@@ -12,6 +12,8 @@ osf_badge(link)
 
 - link:
 
+  url
+
 ## Value
 
 the link to be used

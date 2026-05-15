@@ -7,7 +7,7 @@
 rmat(x, names = NULL)
 }
 \arguments{
-\item{x}{}
+\item{x}{vector of correlations}
 }
 \value{
 the correlation matrix

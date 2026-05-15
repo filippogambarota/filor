@@ -7,7 +7,7 @@
 conf2quant(conf.level = 0.95)
 }
 \arguments{
-\item{conf.level}{}
+\item{conf.level}{confidence level}
 }
 \description{
 conf2quant

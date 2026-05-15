@@ -164,7 +164,7 @@ z_to_r <- function(z) {
 #' @description
 #' create a correlation matrix given the vector x of unique correlations
 #'
-#' @param x
+#' @param x vector of correlations
 #'
 #' @return the correlation matrix
 #' @export

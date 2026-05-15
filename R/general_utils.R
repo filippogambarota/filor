@@ -43,20 +43,45 @@ success <- function(msg) {
 #' @description Display a progress bar to use within a \code{for} loop
 #' @param niter Integer that indicate the total number of iterations
 #' @param index Integer that indicate the current iteration
-#'
+#' @param width Maximum width of the console output
 #' @export
 #'
-pb <- function(niter, index) {
-  step <- niter / 10
-  if (i %% step == 0) {
-    pr <- paste0(rep("----", index / step), collapse = "")
-    cat("\r", paste0(index / step * 10, "% "), pr, sep = "")
-    utils::flush.console()
-    if (index / step == 10) {
-      cat(" ")
-      cli::cli_alert_success("")
-    }
+
+pb <- function(index, niter, width = 40) {
+  if (!is.numeric(index) || !is.numeric(niter)) {
+    stop("`index` and `niter` must be numeric.")
   }
+
+  if (length(index) != 1 || length(niter) != 1) {
+    stop("`index` and `niter` must be scalar values.")
+  }
+
+  if (is.na(index) || is.na(niter) || niter <= 0) {
+    stop("`niter` must be a positive number and `index` must not be NA.")
+  }
+
+  index <- max(0, min(index, niter))
+  progress <- index / niter
+
+  percent <- floor(progress * 100)
+  filled <- round(width * progress)
+  empty <- width - filled
+
+  bar <- paste0(
+    "[",
+    paste0(rep("=", filled), collapse = ""),
+    paste0(rep(" ", empty), collapse = ""),
+    "]"
+  )
+
+  cat(sprintf("\r%3d%% %s", percent, bar))
+  utils::flush.console()
+
+  if (index >= niter) {
+    cat("\n")
+  }
+
+  invisible(progress)
 }
 
 #' conditional
@@ -125,7 +150,7 @@ all_same <- function(x, na.rm = FALSE) {
 #' @description
 #' Check if a string is a valid url. Thanks to https://stackoverflow.com/a/73952264/9032257
 #'
-#' @param string
+#' @param string url
 #'
 #' @return logical
 #' @export
@@ -137,7 +162,7 @@ is_valid_url <- function(string) {
 
 #' Create a badge of OSF
 #'
-#' @param link
+#' @param link url
 #'
 #' @return the link to be used
 #' @export

@@ -7,7 +7,7 @@
 is_valid_url(string)
 }
 \arguments{
-\item{string}{}
+\item{string}{url}
 }
 \value{
 logical

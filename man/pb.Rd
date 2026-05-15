@@ -4,12 +4,14 @@
 \alias{pb}
 \title{pb}
 \usage{
-pb(niter, index)
+pb(index, niter, width = 40)
 }
 \arguments{
+\item{index}{Integer that indicate the current iteration}
+
 \item{niter}{Integer that indicate the total number of iterations}
 
-\item{index}{Integer that indicate the current iteration}
+\item{width}{Maximum width of the console output}
 }
 \description{
 Display a progress bar to use within a \code{for} loop

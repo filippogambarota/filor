@@ -7,7 +7,7 @@
 osf_badge(link)
 }
 \arguments{
-\item{link}{}
+\item{link}{url}
 }
 \value{
 the link to be used

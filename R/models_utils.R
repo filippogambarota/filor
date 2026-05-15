@@ -235,7 +235,7 @@ wald_test <- function(
 
 #' conf2quant
 #'
-#' @param conf.level
+#' @param conf.level confidence level
 #'
 #' @export
 #'

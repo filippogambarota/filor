@@ -5,7 +5,7 @@ Filters a list, keeping or excluding elements based on their class.
 ## Usage
 
 ``` r
-cfilter(x, class, not = FALSE)
+cfilter(x, classes, not = FALSE)
 ```
 
 ## Arguments
@@ -14,7 +14,7 @@ cfilter(x, class, not = FALSE)
 
   A list of R objects.
 
-- class:
+- classes:
 
   A character string specifying the class to filter by.
 
@@ -33,23 +33,9 @@ specified class.
 ``` r
 lst <- list(1L, "text", 3.14, list(a = 1))
 cfilter(lst, "numeric")  # returns elements that are numeric
-#> [[1]]
-#> [1] 3.14
-#> 
+#> Error in FUN(X[[i]], ...): 'what' must be a character vector or an object with a nameOfClass() method
 cfilter(lst, "character")  # returns character elements
-#> [[1]]
-#> [1] "text"
-#> 
+#> Error in FUN(X[[i]], ...): 'what' must be a character vector or an object with a nameOfClass() method
 cfilter(lst, "numeric", not = TRUE)  # returns elements that are NOT numeric
-#> [[1]]
-#> [1] 1
-#> 
-#> [[2]]
-#> [1] "text"
-#> 
-#> [[3]]
-#> [[3]]$a
-#> [1] 1
-#> 
-#> 
+#> Error in FUN(X[[i]], ...): 'what' must be a character vector or an object with a nameOfClass() method
 ```

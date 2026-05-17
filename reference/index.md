@@ -11,6 +11,8 @@
   : add_random_na
 - [`all_same()`](https://filippogambarota.github.io/filor/reference/all_same.md)
   : all_same
+- [`bold()`](https://filippogambarota.github.io/filor/reference/bold.md)
+  : Format Text as Bold
 - [`cap_link()`](https://filippogambarota.github.io/filor/reference/cap_link.md)
   : cap_link
 - [`capply()`](https://filippogambarota.github.io/filor/reference/capply.md)
@@ -22,12 +24,12 @@
   : cinorm
 - [`closest_number()`](https://filippogambarota.github.io/filor/reference/closest_number.md)
   : closest_number
+- [`code()`](https://filippogambarota.github.io/filor/reference/code.md)
+  : Format Text as Inline Code
 - [`col_has_na()`](https://filippogambarota.github.io/filor/reference/col_has_na.md)
   : col_has_na
 - [`compare_rma()`](https://filippogambarota.github.io/filor/reference/compare_rma.md)
   : compare_rma
-- [`conditional()`](https://filippogambarota.github.io/filor/reference/conditional.md)
-  : conditional
 - [`conf2quant()`](https://filippogambarota.github.io/filor/reference/conf2quant.md)
   : conf2quant
 - [`coridx()`](https://filippogambarota.github.io/filor/reference/coridx.md)
@@ -50,6 +52,8 @@
   : edit_R_env
 - [`epredict()`](https://filippogambarota.github.io/filor/reference/epredict.md)
   : epredict
+- [`escape()`](https://filippogambarota.github.io/filor/reference/escape.md)
+  : Escape Text for a Target Output Format
 - [`extract_pdf_pages()`](https://filippogambarota.github.io/filor/reference/extract_pdf_pages.md)
   : extract_pdf_pages
 - [`fac2con()`](https://filippogambarota.github.io/filor/reference/fac2con.md)
@@ -60,8 +64,8 @@
   : filter_output
 - [`find_pattern()`](https://filippogambarota.github.io/filor/reference/find_pattern.md)
   : find_pattern
-- [`fpvalue()`](https://filippogambarota.github.io/filor/reference/fpvalue.md)
-  : fpvalue
+- [`fpval()`](https://filippogambarota.github.io/filor/reference/fpval.md)
+  : Format p-values
 - [`frames_to_dur()`](https://filippogambarota.github.io/filor/reference/frames_to_dur.md)
   : frames_to_dur
 - [`get_bib_entries()`](https://filippogambarota.github.io/filor/reference/get_bib_entries.md)
@@ -90,6 +94,8 @@
   : gh_down_link
 - [`is_valid_url()`](https://filippogambarota.github.io/filor/reference/is_valid_url.md)
   : is_valid_url
+- [`italic()`](https://filippogambarota.github.io/filor/reference/italic.md)
+  : Format Text as Italic
 - [`leave1out()`](https://filippogambarota.github.io/filor/reference/leave1out.md)
   : leave1out
 - [`letter()`](https://filippogambarota.github.io/filor/reference/letter.md)
@@ -143,7 +149,7 @@
 - [`sampdist()`](https://filippogambarota.github.io/filor/reference/sampdist.md)
   : sampdist
 - [`sample_by_group()`](https://filippogambarota.github.io/filor/reference/sample_by_group.md)
-  : Campionamento Casuale Semplice o Stratificato
+  : Simple or Stratified Random Sampling
 - [`scount()`](https://filippogambarota.github.io/filor/reference/scount.md)
   : scount
 - [`se_p()`](https://filippogambarota.github.io/filor/reference/se_p.md)

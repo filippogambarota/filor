@@ -1,7 +1,7 @@
 Package: filor
 Type: Package
 Title: Personal collection of useful functions
-Version: 1.0.0
+Version: 1.0.1
 Author: Filippo Gambarota
 Maintainer: Filippo Gambarota <filippo.gambarota@unipd.it>
 Description: Personal collection of useful functions
@@ -27,3 +27,4 @@ Suggests:
     testthat (>= 3.0.0)
 Config/testthat/edition: 3
 Config/roxygen2/version: 8.0.0
+RoxygenNote: 7.3.2

@@ -2,40 +2,51 @@
 % Please edit documentation in R/general_utils.R
 \name{sample_by_group}
 \alias{sample_by_group}
-\title{Campionamento Casuale Semplice o Stratificato}
+\title{Simple or Stratified Random Sampling}
 \usage{
 sample_by_group(data, n = 1, by = NULL)
 }
 \arguments{
-\item{data}{Un \code{data.frame} da cui estrarre il campione.}
+\item{data}{A \code{data.frame} from which rows are sampled.}
 
-\item{n}{Un intero positivo che indica il numero di righe da estrarre per ogni gruppo.
-Se il gruppo ha meno di \code{n} righe, viene restituito l'intero gruppo. Predefinito a 1.}
+\item{n}{A non-negative integer giving the number of rows to sample from each
+group. If a group contains fewer than \code{n} rows, all rows in that group
+are returned. Defaults to \code{1}.}
 
-\item{by}{Un vettore di caratteri (es. \code{"colonna_A"} o \code{c("col1", "col2")})
-che specifica le colonne di raggruppamento. Se \code{NULL} (predefinito),
-il campionamento avviene sull'intero dataset.}
+\item{by}{A character vector specifying the grouping columns, for example
+\code{"group"} or \code{c("group1", "group2")}. If \code{NULL}, sampling is
+performed over the entire data frame. Defaults to \code{NULL}.}
 }
 \value{
-Un \code{data.frame} contenente le righe campionate, con i nomi delle righe (\code{rownames}) resettati.
+A \code{data.frame} containing the sampled rows, with row names reset.
 }
 \description{
-Questa funzione permette di estrarre un campione casuale di righe da un data frame.
-È possibile eseguire un campionamento globale oppure un campionamento stratificato
-raggruppando i dati per una o più colonne specificate.
+Draws a random sample of rows from a data frame. Sampling can be performed
+globally across the whole data set or separately within groups defined by one
+or more columns.
 }
 \details{
-La funzione utilizza internamente \code{\link{split}} e \code{\link{lapply}} per gestire
-i sottogruppi. Se un gruppo risultante è vuoto, non contribuirà al risultato finale.
+When \code{by = NULL}, the function samples up to \code{n} rows from the full
+data frame. When \code{by} is supplied, the data are split by the selected
+grouping columns and up to \code{n} rows are sampled independently from each
+group.
+
+If a group contains fewer than \code{n} rows, all rows from that group are
+returned. The function does not set a random seed; use \code{\link{set.seed}}
+before calling it if reproducible sampling is required.
 }
 \examples{
-# Campionamento di 2 righe dal dataset iris (globale)
+# Sample 2 rows from the full iris data set
 sample_by_group(iris, n = 2)
 
-# Campionamento di 1 riga per ogni Specie in iris
+# Sample 1 row per Species
 sample_by_group(iris, n = 1, by = "Species")
 
-# Campionamento stratificato su più colonne (se applicabile)
-# sample_by_group(mtcars, n = 2, by = c("cyl", "am"))
+# Sample 2 rows per combination of cyl and am
+sample_by_group(mtcars, n = 2, by = c("cyl", "am"))
+
+# Reproducible sampling
+set.seed(123)
+sample_by_group(iris, n = 1, by = "Species")
 
 }

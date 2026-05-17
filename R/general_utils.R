@@ -84,20 +84,6 @@ pb <- function(index, niter, width = 40) {
   invisible(progress)
 }
 
-#' conditional
-#' @description Function to create a wrapper version of the input function
-#' that run according to a logical condition. Useful for conditional pipelines.
-#' see https://community.rstudio.com/t/conditional-pipelines/6076/2
-#' @param fun function
-#'
-#' @export
-#'
-conditional <- function(fun) {
-  function(..., execute) {
-    if (execute) fun(...) else ..1
-  }
-}
-
 #' gh_down_link
 #' @description create a download/view link for a github file from url
 #' @param x character with the github link
@@ -171,7 +157,6 @@ osf_badge <- function(link) {
   sprintf("https://img.shields.io/badge/OSF-%s-337AB7", link)
 }
 
-
 #' try_seed
 #' @description
 #' Repeat an R expression a certain number of times with a random seed. Each iteration is self-paced by pressing a key. The random seed is printed along with the result of the
@@ -197,7 +182,7 @@ try_seed <- function(expr, maxrun = 100, digits = 4) {
 #' Filters a list, keeping or excluding elements based on their class.
 #'
 #' @param x A list of R objects.
-#' @param class A character string specifying the class to filter by.
+#' @param classes A character string specifying the class to filter by.
 #' @param not Logical; if `TRUE`, elements *not* inheriting from `class` are kept. Default is `FALSE`.
 #'
 #' @return A list containing the elements of `x` that (do not) inherit from the specified class.
@@ -209,14 +194,19 @@ try_seed <- function(expr, maxrun = 100, digits = 4) {
 #' cfilter(lst, "numeric", not = TRUE)  # returns elements that are NOT numeric
 #'
 #' @export
-cfilter <- function(x, class, not = FALSE) {
-  keep <- sapply(x, function(e) any(class %in% class(e)))
+cfilter <- function(x, classes, not = FALSE) {
+  keep <- vapply(
+    x,
+    function(e) any(vapply(classes, inherits, logical(1), what = e)),
+    logical(1)
+  )
+
   if (not) {
     keep <- !keep
   }
+
   x[keep]
 }
-
 #' sourceR
 #' @description
 #' Load one or more R functions from R/ folder (or any custom folder)
@@ -227,13 +217,21 @@ cfilter <- function(x, class, not = FALSE) {
 #' @export
 #'
 sourceR <- function(files = NULL, path = "R") {
-  rfiles <- list.files(path, pattern = "*.[R|r]", full.names = TRUE)
+  rfiles <- list.files(
+    path,
+    pattern = "\\.[Rr]$",
+    full.names = TRUE
+  )
+
   if (!is.null(files)) {
-    rfiles <- rfiles[grepl(paste0(files, collapse = "|"), rfiles)]
+    rfiles <- rfiles[basename(rfiles) %in% files]
   }
+
   for (r in rfiles) {
     source(r, echo = FALSE)
   }
+
+  invisible(rfiles)
 }
 
 #' trim
@@ -459,17 +457,16 @@ reprex <- function(expr, comment = "#>"){
 #' @export
 #'
 capply <- function(x, condition, FUN, ...) {
-  out <- lapply(x, function(xi) {
-    ok <- condition(xi)
-    if (isTRUE(ok)) FUN(xi, ...) else xi
-  })
+  stopifnot(is.function(condition), is.function(FUN))
 
-  if (is.data.frame(x)) {
-    out <- as.data.frame(out,
-                         optional = TRUE,
-                         stringsAsFactors = FALSE)
+  out <- x
+
+  for (i in seq_along(x)) {
+    if (isTRUE(condition(x[[i]]))) {
+      out[[i]] <- FUN(x[[i]], ...)
+    }
   }
-  names(out) <- names(x)
+
   out
 }
 
@@ -496,63 +493,100 @@ dround <- function(x, digits = getOption("digits"), ...) {
   capply(x, is.numeric, round, digits = digits, ...)
 }
 
-
-#' Campionamento Casuale Semplice o Stratificato
+#' Simple or Stratified Random Sampling
 #'
 #' @description
-#' Questa funzione permette di estrarre un campione casuale di righe da un data frame.
-#' È possibile eseguire un campionamento globale oppure un campionamento stratificato
-#' raggruppando i dati per una o più colonne specificate.
+#' Draws a random sample of rows from a data frame. Sampling can be performed
+#' globally across the whole data set or separately within groups defined by one
+#' or more columns.
 #'
-#' @param data Un \code{data.frame} da cui estrarre il campione.
-#' @param n Un intero positivo che indica il numero di righe da estrarre per ogni gruppo.
-#'   Se il gruppo ha meno di \code{n} righe, viene restituito l'intero gruppo. Predefinito a 1.
-#' @param by Un vettore di caratteri (es. \code{"colonna_A"} o \code{c("col1", "col2")})
-#'   che specifica le colonne di raggruppamento. Se \code{NULL} (predefinito),
-#'   il campionamento avviene sull'intero dataset.
+#' @param data A \code{data.frame} from which rows are sampled.
+#' @param n A non-negative integer giving the number of rows to sample from each
+#'   group. If a group contains fewer than \code{n} rows, all rows in that group
+#'   are returned. Defaults to \code{1}.
+#' @param by A character vector specifying the grouping columns, for example
+#'   \code{"group"} or \code{c("group1", "group2")}. If \code{NULL}, sampling is
+#'   performed over the entire data frame. Defaults to \code{NULL}.
 #'
-#' @return Un \code{data.frame} contenente le righe campionate, con i nomi delle righe (\code{rownames}) resettati.
+#' @return
+#' A \code{data.frame} containing the sampled rows, with row names reset.
 #'
 #' @details
-#' La funzione utilizza internamente \code{\link{split}} e \code{\link{lapply}} per gestire
-#' i sottogruppi. Se un gruppo risultante è vuoto, non contribuirà al risultato finale.
+#' When \code{by = NULL}, the function samples up to \code{n} rows from the full
+#' data frame. When \code{by} is supplied, the data are split by the selected
+#' grouping columns and up to \code{n} rows are sampled independently from each
+#' group.
+#'
+#' If a group contains fewer than \code{n} rows, all rows from that group are
+#' returned. The function does not set a random seed; use \code{\link{set.seed}}
+#' before calling it if reproducible sampling is required.
 #'
 #' @examples
-#' # Campionamento di 2 righe dal dataset iris (globale)
+#' # Sample 2 rows from the full iris data set
 #' sample_by_group(iris, n = 2)
 #'
-#' # Campionamento di 1 riga per ogni Specie in iris
+#' # Sample 1 row per Species
 #' sample_by_group(iris, n = 1, by = "Species")
 #'
-#' # Campionamento stratificato su più colonne (se applicabile)
-#' # sample_by_group(mtcars, n = 2, by = c("cyl", "am"))
+#' # Sample 2 rows per combination of cyl and am
+#' sample_by_group(mtcars, n = 2, by = c("cyl", "am"))
+#'
+#' # Reproducible sampling
+#' set.seed(123)
+#' sample_by_group(iris, n = 1, by = "Species")
 #'
 #' @export
 sample_by_group <- function(data, n = 1, by = NULL) {
+  if (!is.data.frame(data)) {
+    stop("'data' must be a data.frame.", call. = FALSE)
+  }
+
+  if (length(n) != 1L || is.na(n) || n < 0 || n != floor(n)) {
+    stop("'n' must be a single non-negative integer.", call. = FALSE)
+  }
+
+  if (!is.null(by)) {
+    if (!is.character(by)) {
+      stop("'by' must be NULL or a character vector of column names.", call. = FALSE)
+    }
+
+    missing_cols <- setdiff(by, names(data))
+    if (length(missing_cols) > 0L) {
+      stop(
+        "The following columns in 'by' are not in 'data': ",
+        paste(missing_cols, collapse = ", "),
+        call. = FALSE
+      )
+    }
+  }
+
+  if (nrow(data) == 0L || n == 0L) {
+    out <- data[0L, , drop = FALSE]
+    rownames(out) <- NULL
+    return(out)
+  }
+
   if (is.null(by)) {
-    # Uso seq_len per evitare problemi se data ha 0 righe
     idx <- sample(seq_len(nrow(data)), size = min(n, nrow(data)))
     out <- data[idx, , drop = FALSE]
   } else {
-    # Divido il dataframe per i gruppi specificati
-    byl <- data[by]
-    datal <- split(data, byl)
+    groups <- split(data, data[by], drop = TRUE)
 
-    out_list <- lapply(datal, function(x) {
+    out_list <- lapply(groups, function(x) {
       nr <- nrow(x)
-      if (nr == 0) return(NULL)
-
-      # Campionamento sicuro: non chiede più di quanto disponibile
-      size_to_draw <- min(n, nr)
-      idx <- sample(seq_len(nr), size = size_to_draw)
+      idx <- sample(seq_len(nr), size = min(n, nr))
       x[idx, , drop = FALSE]
     })
 
-    out <- do.call(rbind, out_list)
+    if (length(out_list) == 0L) {
+      out <- data[0L, , drop = FALSE]
+    } else {
+      out <- do.call(rbind, out_list)
+    }
   }
 
   rownames(out) <- NULL
-  return(out)
+  out
 }
 
 #' Generate a sequence over the range of a numeric vector

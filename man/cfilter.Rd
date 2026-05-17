@@ -4,12 +4,12 @@
 \alias{cfilter}
 \title{Filter a List by Class}
 \usage{
-cfilter(x, class, not = FALSE)
+cfilter(x, classes, not = FALSE)
 }
 \arguments{
 \item{x}{A list of R objects.}
 
-\item{class}{A character string specifying the class to filter by.}
+\item{classes}{A character string specifying the class to filter by.}
 
 \item{not}{Logical; if `TRUE`, elements *not* inheriting from `class` are kept. Default is `FALSE`.}
 }

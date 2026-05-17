@@ -57,7 +57,6 @@ closest_number <- function(vector, target){
   return(out)
 }
 
-
 #' cinorm
 #'
 #' @param x a vector
@@ -160,7 +159,7 @@ rdim <- function(k){
 #' @return the number of correlations
 #' @export
 #'
-getcors <- function(x){s
+getcors <- function(x){
   if(!is.matrix(x)){
     stop("x need to be a matrix!")
   }
